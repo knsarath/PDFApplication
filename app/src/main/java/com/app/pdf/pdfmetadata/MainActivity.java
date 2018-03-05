@@ -1,61 +1,80 @@
 package com.app.pdf.pdfmetadata;
 
 import android.content.DialogInterface;
-import android.graphics.Rect;
+import android.databinding.DataBindingUtil;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.LinearLayout;
+import android.util.Log;
 
-import com.github.barteksc.pdfviewer.PDFView;
+import com.app.pdf.pdfmetadata.databinding.ActivityMainBinding;
+import com.app.pdf.pdfmetadata.schema.MapPage;
+import com.app.pdf.pdfmetadata.schema.MarkerInfo;
+import com.app.pdf.pdfmetadata.schema.MarkerView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-public class MainActivity extends AppCompatActivity {
-    private PDFView mPdfView;
-    private View mView;
-    private float mIconPointLeft = 0.62f;
-    private float mIconPointTop = 0.17f;
+import java.lang.reflect.Type;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements MarkerClickListener {
+    private MarkerDrawing mMarkerDrawing;
+    private static final String TAG = "MainActivity";
+    private ActivityMainBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mPdfView = findViewById(R.id.pdfView);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         loadPDF();
-        drawIcon();
     }
 
-    private void drawIcon() {
-        final LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
-        mView = layoutInflater.inflate(R.layout.marker_view, null);
-        mView.setLayoutParams(new LinearLayout.LayoutParams(100, 100));
-        mView.setVisibility(View.GONE);
-        mView.setOnClickListener(view -> new AlertDialog.Builder(MainActivity.this)
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+    }
+
+    private void loadPDF() {
+        mMarkerDrawing = new MarkerDrawer(mBinding.pdfView);
+        Type type = new TypeToken<List<MapPage>>() {
+        }.getType();
+        String json = DummyData.readFromAssets(this.getApplicationContext(), "marker_info.json");
+        List<MapPage> mapInformation = new Gson().fromJson(json, type);
+        mBinding.pdfView.fromAsset("map.pdf")
+                .onPageChange((pagenum, pageCount) -> {
+                    Log.d(TAG, "onPageChange: " + pagenum);
+                    List<MarkerInfo> markerInfos = mapInformation.get(pagenum).mMarkerInfos;
+                    mMarkerDrawing.placeMarkers(markerInfos);
+                })
+                .onDraw((canvas, pageWidth, pageHeight, displayedPage) -> {
+                    Log.d(TAG, "onDraw pageHeight: " + pageHeight + "   pageWidth: " + pageWidth);
+                    mMarkerDrawing.onZoom(canvas, pageWidth, pageHeight);
+                })
+                .onRender(nbPages -> mMarkerDrawing.showMarkers())
+                .load();
+        mMarkerDrawing.setMarkerClickListener(this);
+    }
+
+    @Override
+    public void onMarkerClicked(MarkerView markerView, MarkerInfo markerInfo) {
+        new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Info")
-                .setMessage("You clicked on info button!!")
+                .setMessage(markerInfo.mMarkerData.data)
                 .setPositiveButton("OK", this::dismiss)
                 .setNegativeButton("CANCEL", this::dismiss)
-                .show());
-        mPdfView.addView(mView);
+                .show();
     }
 
     private void dismiss(DialogInterface dialogInterface, int i) {
         dialogInterface.dismiss();
     }
 
-    private void loadPDF() {
-        mPdfView.fromAsset("map.pdf")
-                .onDraw((canvas, pageWidth, pageHeight, displayedPage) -> {
-                    float scale = mPdfView.getZoom();
-                    Rect clipBounds = canvas.getClipBounds();
-                    float newHeight = canvas.getHeight() * scale;
-                    float newWidth = canvas.getWidth() * scale;
-                    float pointXinNewCanvas = (newWidth * mIconPointLeft) - clipBounds.left - (mView.getWidth() * 0.5f);
-                    float pointYInNewCanvas = (newHeight * mIconPointTop) - clipBounds.top - (mView.getHeight() * 0.5f);
-                    mView.animate().x(pointXinNewCanvas).y(pointYInNewCanvas).setDuration(0).start();
-                })
-                .onLoad(nbPages -> mView.setVisibility(View.VISIBLE))
-                .load();
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mMarkerDrawing.destroy();
+        mBinding.unbind();
     }
 }
