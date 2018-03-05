@@ -2,8 +2,6 @@ package com.app.pdf.pdfmetadata;
 
 import android.content.DialogInterface;
 import android.graphics.Rect;
-import android.net.Uri;
-import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,9 +10,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.github.barteksc.pdfviewer.PDFView;
-import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
-
-import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
     private PDFView mPdfView;
@@ -27,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mPdfView = findViewById(R.id.pdfView);
-        loadPDF("input_files/map.pdf");
+        loadPDF();
         drawIcon();
     }
 
@@ -49,9 +44,8 @@ public class MainActivity extends AppCompatActivity {
         dialogInterface.dismiss();
     }
 
-    private void loadPDF(String sdcardfilePath) {
-        Uri uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), sdcardfilePath));
-        mPdfView.fromUri(uri)
+    private void loadPDF() {
+        mPdfView.fromAsset("map.pdf")
                 .onDraw((canvas, pageWidth, pageHeight, displayedPage) -> {
                     float scale = mPdfView.getZoom();
                     Rect clipBounds = canvas.getClipBounds();
