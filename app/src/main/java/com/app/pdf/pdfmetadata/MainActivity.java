@@ -41,17 +41,25 @@ public class MainActivity extends AppCompatActivity implements MarkerClickListen
         }.getType();
         String json = DummyData.readFromAssets(this.getApplicationContext(), "marker_info.json");
         List<MapPage> mapInformation = new Gson().fromJson(json, type);
-        mBinding.pdfView.fromAsset("map.pdf")
+
+        String assetName = "combined.pdf";
+        assetName = "map.pdf";
+
+
+        mBinding.pdfView.fromAsset(assetName)
                 .onPageChange((pagenum, pageCount) -> {
                     Log.d(TAG, "onPageChange: " + pagenum);
-                    List<MarkerInfo> markerInfos = mapInformation.get(pagenum).mMarkerInfos;
-                    mMarkerDrawing.placeMarkers(markerInfos);
+                    int indexs = mapInformation.size() - 1;
+                    if (pagenum <= indexs) {
+                        List<MarkerInfo> markerInfos = mapInformation.get(pagenum).mMarkerInfos;
+                        mMarkerDrawing.placeMarkers(markerInfos);
+                    } else {
+                        mMarkerDrawing.clearMarkers();
+                    }
                 })
                 .onDraw((canvas, pageWidth, pageHeight, displayedPage) -> {
-                    Log.d(TAG, "onDraw pageHeight: " + pageHeight + "   pageWidth: " + pageWidth);
                     mMarkerDrawing.onZoom(canvas, pageWidth, pageHeight);
                 })
-                .onRender(nbPages -> mMarkerDrawing.showMarkers())
                 .load();
         mMarkerDrawing.setMarkerClickListener(this);
     }

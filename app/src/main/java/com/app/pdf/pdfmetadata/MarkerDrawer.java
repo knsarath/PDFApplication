@@ -33,6 +33,10 @@ public class MarkerDrawer implements MarkerDrawing, View.OnClickListener {
 
     @Override
     public void placeMarkers(List<MarkerInfo> markerInfos) {
+        if (mMarkers != null) {
+            mMarkingCanvas.removeAllViews();
+            mMarkers = null;
+        }
         for (MarkerInfo markerInfo : markerInfos) {
             placeMarker(markerInfo);
         }
@@ -56,7 +60,6 @@ public class MarkerDrawer implements MarkerDrawing, View.OnClickListener {
     public void onZoom(Canvas canvas, float newWidth, float newHeight) {
         if (mMarkers != null) {
             Rect clipBounds = canvas.getClipBounds();
-            Log.d(TAG, "newHeight: " + newHeight + "  newWidth: " + newWidth);
             for (MarkerView markerView : mMarkers) {
                 MarkerInfo markerInfo = markerView.getMarkerInfo();
                 float widthFactor = markerInfo.pointCoordinate.leftPercentage / 100f;
@@ -65,6 +68,7 @@ public class MarkerDrawer implements MarkerDrawing, View.OnClickListener {
                 float pointYInNewCanvas = (newHeight * heightFactor) - clipBounds.top - (dpToPx(markerInfo.mMarkerSize.height) * 0.5f);
                 markerView.setX(pointXinNewCanvas);
                 markerView.setY(pointYInNewCanvas);
+                markerView.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -101,6 +105,13 @@ public class MarkerDrawer implements MarkerDrawing, View.OnClickListener {
     @Override
     public void showMarkers() {
         setMarkersVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void clearMarkers() {
+        mMarkers = null;
+        mMarkingCanvas.removeAllViews();
+        mMarkerClickListener = null;
     }
 
 

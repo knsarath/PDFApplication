@@ -56,52 +56,26 @@
     ]
   },
 
-  
+
   {
     "marker_info_list": [
       {
         "marker_position": {
+          "leftPercentage": 75.0,
+          "topPercentage": 10.0
+        },
+        "marker_size": {
+          "height": 32,
+          "width": 32
+        },
+        "marker_metadata": {
+          "data": "This is a marker data"
+        }
+      },
+      {
+        "marker_position": {
           "leftPercentage": 10.0,
-          "topPercentage": 20.0
-        },
-        "marker_size": {
-          "height": 32,
-          "width": 32
-        },
-        "marker_metadata": {
-          "data": "This is a marker data"
-        }
-      },
-      {
-        "marker_position": {
-          "leftPercentage": 30.0,
-          "topPercentage": 20.0
-        },
-        "marker_size": {
-          "height": 32,
-          "width": 32
-        },
-        "marker_metadata": {
-          "data": "This is a marker data"
-        }
-      },
-      {
-        "marker_position": {
-          "leftPercentage": 25.0,
-          "topPercentage": 35.0
-        },
-        "marker_size": {
-          "height": 32,
-          "width": 32
-        },
-        "marker_metadata": {
-          "data": "This is a marker data"
-        }
-      },
-      {
-        "marker_position": {
-          "leftPercentage": 50.0,
-          "topPercentage": 50.0
+          "topPercentage": 72.0
         },
         "marker_size": {
           "height": 32,
@@ -113,6 +87,7 @@
       }
     ]
   }
-  
-  
+
+
+
 ]

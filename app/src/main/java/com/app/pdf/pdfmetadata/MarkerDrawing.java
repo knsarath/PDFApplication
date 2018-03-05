@@ -27,4 +27,5 @@ public interface MarkerDrawing {
     void showMarkers();
 
 
+    void clearMarkers();
 }
