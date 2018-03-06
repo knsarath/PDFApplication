@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity implements MarkerClickListen
         mBinding.pdfView.fromAsset(assetName)
                 .onPageChange((pagenum, pageCount) -> {
                     Log.d(TAG, "onPageChange: " + pagenum);
-                    int indexs = mapInformation.size() - 1;
-                    if (pagenum <= indexs) {
+                    int maxIndex = mapInformation.size() - 1;
+                    if (pagenum <= maxIndex) {
                         List<MarkerInfo> markerInfos = mapInformation.get(pagenum).mMarkerInfos;
                         mMarkerDrawing.placeMarkers(markerInfos);
                     } else {

@@ -34,12 +34,17 @@ public class MarkerDrawer implements MarkerDrawing, View.OnClickListener {
     @Override
     public void placeMarkers(List<MarkerInfo> markerInfos) {
         if (mMarkers != null) {
-            mMarkingCanvas.removeAllViews();
-            mMarkers = null;
+            reset();
         }
         for (MarkerInfo markerInfo : markerInfos) {
             placeMarker(markerInfo);
         }
+    }
+
+    private void reset() {
+        mMarkingCanvas.removeAllViews();
+        mMarkers = null;
+        mMarkerClickListener = null;
     }
 
     private void placeMarker(MarkerInfo markerInfo) {
@@ -62,10 +67,12 @@ public class MarkerDrawer implements MarkerDrawing, View.OnClickListener {
             Rect clipBounds = canvas.getClipBounds();
             for (MarkerView markerView : mMarkers) {
                 MarkerInfo markerInfo = markerView.getMarkerInfo();
+
                 float widthFactor = markerInfo.pointCoordinate.leftPercentage / 100f;
                 float heightFactor = markerInfo.pointCoordinate.topPercentage / 100f;
                 float pointXinNewCanvas = (newWidth * widthFactor) - clipBounds.left - (dpToPx(markerInfo.mMarkerSize.width) * 0.5f);
                 float pointYInNewCanvas = (newHeight * heightFactor) - clipBounds.top - (dpToPx(markerInfo.mMarkerSize.height) * 0.5f);
+
                 markerView.setX(pointXinNewCanvas);
                 markerView.setY(pointYInNewCanvas);
                 markerView.setVisibility(View.VISIBLE);
@@ -109,9 +116,7 @@ public class MarkerDrawer implements MarkerDrawing, View.OnClickListener {
 
     @Override
     public void clearMarkers() {
-        mMarkers = null;
-        mMarkingCanvas.removeAllViews();
-        mMarkerClickListener = null;
+        reset();
     }
 
 
