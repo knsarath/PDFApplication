@@ -57,9 +57,7 @@ public class MainActivity extends AppCompatActivity implements MarkerClickListen
                         mMarkerDrawing.clearMarkers();
                     }
                 })
-                .onDraw((canvas, pageWidth, pageHeight, displayedPage) -> {
-                    mMarkerDrawing.onZoom(canvas, pageWidth, pageHeight);
-                })
+                .onDraw((canvas, pageWidth, pageHeight, displayedPage) -> mMarkerDrawing.onZoom(canvas, pageWidth, pageHeight))
                 .load();
         mMarkerDrawing.setMarkerClickListener(this);
     }
