@@ -1,16 +1,11 @@
 package com.hp.augmentedprint.ui;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
 import com.hp.augmentedprint.common.BaseActivity;
 import com.hp.augmentedprint.pdfmetadata.R;
-
 import java.util.concurrent.TimeUnit;
-
 import io.reactivex.Completable;
-import io.reactivex.Observable;
 import io.reactivex.observers.DisposableCompletableObserver;
 
 
@@ -40,6 +35,7 @@ public class SplashScreenActivity extends BaseActivity {
     private void launchMainScreen() {
         Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
 
