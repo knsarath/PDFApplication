@@ -1,4 +1,4 @@
-package com.hp.augmentedprint;
+package com.hp.augmentedprint.ui;
 
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
@@ -7,6 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.hp.augmentedprint.DummyData;
+import com.hp.augmentedprint.MarkerClickListener;
+import com.hp.augmentedprint.MarkerDrawer;
+import com.hp.augmentedprint.MarkerDrawing;
 import com.hp.augmentedprint.pdfmetadata.R;
 import com.hp.augmentedprint.pdfmetadata.databinding.ActivityMainBinding;
 import com.hp.augmentedprint.schema.MapPage;
@@ -27,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements MarkerClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
         loadPDF();
     }
 

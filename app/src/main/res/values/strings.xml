@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PDF Application</string>
+    <string name="splash_screen_title">Augmented Print \nBy</string>
 </resources>
