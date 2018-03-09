@@ -1,4 +1,4 @@
-package com.app.pdf.pdfmetadata.schema;
+package com.hp.augmentedprint.schema;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

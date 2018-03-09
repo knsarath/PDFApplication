@@ -1,8 +1,8 @@
-package com.app.pdf.pdfmetadata;
+package com.hp.augmentedprint;
 
 import android.graphics.Canvas;
 
-import com.app.pdf.pdfmetadata.schema.MarkerInfo;
+import com.hp.augmentedprint.schema.MarkerInfo;
 
 import java.util.List;
 

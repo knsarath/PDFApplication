@@ -1,4 +1,4 @@
-package com.app.pdf.pdfmetadata;
+package com.hp.augmentedprint;
 
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
@@ -7,10 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.app.pdf.pdfmetadata.databinding.ActivityMainBinding;
-import com.app.pdf.pdfmetadata.schema.MapPage;
-import com.app.pdf.pdfmetadata.schema.MarkerInfo;
-import com.app.pdf.pdfmetadata.schema.MarkerView;
+import com.hp.augmentedprint.pdfmetadata.R;
+import com.hp.augmentedprint.pdfmetadata.databinding.ActivityMainBinding;
+import com.hp.augmentedprint.schema.MapPage;
+import com.hp.augmentedprint.schema.MarkerInfo;
+import com.hp.augmentedprint.schema.MarkerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

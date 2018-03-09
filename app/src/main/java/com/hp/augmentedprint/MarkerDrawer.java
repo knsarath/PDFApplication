@@ -1,18 +1,18 @@
-package com.app.pdf.pdfmetadata;
+package com.hp.augmentedprint;
 
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.app.pdf.pdfmetadata.schema.MarkerInfo;
-import com.app.pdf.pdfmetadata.schema.MarkerView;
+import com.hp.augmentedprint.pdfmetadata.R;
+import com.hp.augmentedprint.schema.MarkerInfo;
+import com.hp.augmentedprint.schema.MarkerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +94,7 @@ public class MarkerDrawer implements MarkerDrawing, View.OnClickListener {
     public void destroy() {
         mMarkingCanvas = null;
         mMarkers = null;
+        mMarkerClickListener = null;
         Log.e(TAG, "destroy: ");
     }
 

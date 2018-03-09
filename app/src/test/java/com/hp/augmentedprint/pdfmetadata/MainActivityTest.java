@@ -1,10 +1,10 @@
-package com.app.pdf.pdfmetadata;
+package com.hp.augmentedprint.pdfmetadata;
 
-import com.app.pdf.pdfmetadata.schema.MapPage;
-import com.app.pdf.pdfmetadata.schema.MarkerInfo;
-import com.app.pdf.pdfmetadata.schema.MarkerData;
-import com.app.pdf.pdfmetadata.schema.MarkerSize;
-import com.app.pdf.pdfmetadata.schema.PointCoordinate;
+import com.hp.augmentedprint.schema.MapPage;
+import com.hp.augmentedprint.schema.MarkerInfo;
+import com.hp.augmentedprint.schema.MarkerData;
+import com.hp.augmentedprint.schema.MarkerSize;
+import com.hp.augmentedprint.schema.PointCoordinate;
 import com.google.gson.Gson;
 
 import org.junit.Test;

@@ -1,7 +1,7 @@
-package com.app.pdf.pdfmetadata;
+package com.hp.augmentedprint;
 
-import com.app.pdf.pdfmetadata.schema.MarkerInfo;
-import com.app.pdf.pdfmetadata.schema.MarkerView;
+import com.hp.augmentedprint.schema.MarkerInfo;
+import com.hp.augmentedprint.schema.MarkerView;
 
 /**
  * Created by sarath on 5/3/18.

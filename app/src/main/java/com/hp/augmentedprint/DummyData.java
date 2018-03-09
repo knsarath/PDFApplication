@@ -1,4 +1,4 @@
-package com.app.pdf.pdfmetadata;
+package com.hp.augmentedprint;
 
 import android.content.Context;
 

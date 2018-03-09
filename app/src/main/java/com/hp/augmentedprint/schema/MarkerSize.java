@@ -1,4 +1,4 @@
-package com.app.pdf.pdfmetadata.schema;
+package com.hp.augmentedprint.schema;
 
 /**
  * Created by sarath on 5/3/18.
