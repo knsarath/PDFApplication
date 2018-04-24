@@ -4,11 +4,19 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="16dp"
+        android:background="@color/white"
         android:orientation="vertical">
-
-        <com.github.barteksc.pdfviewer.PDFView
-            android:id="@+id/pdfView"
+        <com.spinner.dropdown.DropDown
+            android:id="@+id/dropDown"
+            android:hint=" Select "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="200dp"/>
+        <FrameLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+        </FrameLayout>
     </LinearLayout>
 </layout>

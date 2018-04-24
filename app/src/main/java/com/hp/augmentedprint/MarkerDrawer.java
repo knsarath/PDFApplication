@@ -49,8 +49,8 @@ public class MarkerDrawer implements MarkerDrawing, View.OnClickListener {
 
     private void placeMarker(MarkerInfo markerInfo) {
         MarkerView markerView = new MarkerView(mMarkingCanvas.getContext());
-        int width = (int) dpToPx(markerInfo.mMarkerSize.width);
-        int height = (int) dpToPx(markerInfo.mMarkerSize.height);
+        int width = (int) dpToPx(markerInfo.markerSize.width);
+        int height = (int) dpToPx(markerInfo.markerSize.height);
         markerView.setLayoutParams(new LinearLayout.LayoutParams(width, height));
         markerView.setBackgroundDrawable(ContextCompat.getDrawable(markerView.getContext(), R.drawable.ic_info_outline_black_24dp));
         markerView.setVisibility(View.GONE);
@@ -67,12 +67,10 @@ public class MarkerDrawer implements MarkerDrawing, View.OnClickListener {
             Rect clipBounds = canvas.getClipBounds();
             for (MarkerView markerView : mMarkers) {
                 MarkerInfo markerInfo = markerView.getMarkerInfo();
-
                 float widthFactor = markerInfo.pointCoordinate.leftPercentage / 100f;
                 float heightFactor = markerInfo.pointCoordinate.topPercentage / 100f;
-                float pointXinNewCanvas = (newWidth * widthFactor) - clipBounds.left - (dpToPx(markerInfo.mMarkerSize.width) * 0.5f);
-                float pointYInNewCanvas = (newHeight * heightFactor) - clipBounds.top - (dpToPx(markerInfo.mMarkerSize.height) * 0.5f);
-
+                float pointXinNewCanvas = (newWidth * widthFactor) - clipBounds.left - (dpToPx(markerInfo.markerSize.width) * 0.5f);
+                float pointYInNewCanvas = (newHeight * heightFactor) - clipBounds.top - (dpToPx(markerInfo.markerSize.height) * 0.5f);
                 markerView.setX(pointXinNewCanvas);
                 markerView.setY(pointYInNewCanvas);
                 markerView.setVisibility(View.VISIBLE);

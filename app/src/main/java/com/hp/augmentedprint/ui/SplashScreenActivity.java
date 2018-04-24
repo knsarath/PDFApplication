@@ -33,7 +33,7 @@ public class SplashScreenActivity extends BaseActivity {
     }
 
     private void launchMainScreen() {
-        Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+        Intent intent = new Intent(SplashScreenActivity.this, QrCodeActivity.class);
         startActivity(intent);
         finish();
     }

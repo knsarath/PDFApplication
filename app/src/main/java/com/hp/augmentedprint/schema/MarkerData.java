@@ -1,5 +1,7 @@
 package com.hp.augmentedprint.schema;
 
+import android.support.annotation.StringDef;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -9,6 +11,8 @@ import com.google.gson.annotations.SerializedName;
 public class MarkerData {
     @SerializedName("data")
     public String data;
+    @SerializedName("redirect_uri")
+    public String redirectUrl;
 
     public MarkerData(String data) {
         this.data = data;

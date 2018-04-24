@@ -1,14 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "com.hp.augmentedprint"
-        minSdkVersion 15
-        targetSdkVersion 26
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -48,13 +49,48 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    //testImplementation 'junit:junit:4.12'
+
+    implementation "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
+    //support libraries
+    implementation "com.android.support:design:$rootProject.ext.supportLibraryVersion"
+
+    //Rxjava
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxAndroidVersion"
+
+
+    //Logging
+    implementation "com.jakewharton.timber:timber:$rootProject.ext.timberVersion"
+
+    implementation "com.spinner.dropdown:spinner:$rootProject.ext.dropDownVersion"
+
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"
+    implementation "com.squareup.okhttp3:okhttp:$rootProject.ext.okHttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okHttpVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofitRxJavaAdapterVersion"
+
+    //Dagger 2
+    implementation "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.ext.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.ext.daggerVersion"
+
+    //PDF
+    implementation "com.github.barteksc:android-pdf-viewer:$rootProject.ext.pdfLibraryVersion"
+
+    //qrcode
+    compile 'me.dm7.barcodescanner:zxing:1.9'
+
+//    compile('com.journeyapps:zxing-android-embedded:3.6.0') { transitive = false }
+//    compile 'com.android.support:appcompat-v7:25.3.1'   // Version 23+ is required
+//    compile 'com.google.zxing:core:3.3.0'
+//
+//    compile 'com.journeyapps:zxing-android-embedded:3.6.0'
+//    compile 'com.android.support:appcompat-v7:25.3.1'   // Minimum 23+ is required
+
+
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    implementation 'com.github.barteksc:android-pdf-viewer:3.0.0-beta.5'
-    implementation 'com.google.code.gson:gson:2.8.2'
-    implementation "io.reactivex.rxjava2:rxjava:2.1.10"
-    implementation "io.reactivex.rxjava2:rxandroid:2.0.1"
-    implementation 'com.jakewharton.timber:timber:4.6.1'
 }

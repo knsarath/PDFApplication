@@ -1,5 +1,7 @@
 package com.hp.augmentedprint.schema;
 
+import android.support.annotation.StringDef;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -10,14 +12,23 @@ public class MarkerInfo {
     @SerializedName("marker_position")
     public PointCoordinate pointCoordinate;
     @SerializedName("marker_size")
-    public MarkerSize mMarkerSize;
+    public MarkerSize markerSize;
     @SerializedName("marker_metadata")
-    public MarkerData mMarkerData;
+    public MarkerData markerData;
+    @SerializedName("markerType")
+    public String markerType;
+
+    @StringDef({MarkerType.INFO, MarkerType.HYPERLINK})
+    public @interface MarkerType {
+        String INFO = "info";
+        String HYPERLINK = "hyperlink";
+    }
 
 
-    public MarkerInfo(PointCoordinate pointCoordinate, MarkerSize markerSize, MarkerData markerData) {
+    public MarkerInfo(PointCoordinate pointCoordinate, MarkerSize markerSize, @MarkerType String markerType, MarkerData markerData) {
         this.pointCoordinate = pointCoordinate;
-        mMarkerSize = markerSize;
-        mMarkerData = markerData;
+        this.markerSize = markerSize;
+        this.markerType = markerType;
+        this.markerData = markerData;
     }
 }

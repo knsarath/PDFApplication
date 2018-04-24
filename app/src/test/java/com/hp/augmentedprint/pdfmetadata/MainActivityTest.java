@@ -1,5 +1,8 @@
 package com.hp.augmentedprint.pdfmetadata;
 
+import android.support.annotation.NonNull;
+
+import com.hp.augmentedprint.mapschema.MapInformation;
 import com.hp.augmentedprint.schema.MapPage;
 import com.hp.augmentedprint.schema.MarkerInfo;
 import com.hp.augmentedprint.schema.MarkerData;
@@ -12,6 +15,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -22,30 +28,60 @@ public class MainActivityTest {
     @Test
     public void testSchema() {
 
-        MarkerSize markerSize = new MarkerSize(100, 100);
-
-
-        List<MapPage> mapPages = new ArrayList<>();
-
-        MarkerInfo markerInfo1 = new MarkerInfo(new PointCoordinate(10f, 20f), markerSize, new MarkerData("This is a marker data"));
-        MarkerInfo markerInfo2 = new MarkerInfo(new PointCoordinate(30f, 20f), markerSize, new MarkerData("This is a marker data"));
-        MarkerInfo markerInfo3 = new MarkerInfo(new PointCoordinate(25f, 35f), markerSize, new MarkerData("This is a marker data"));
-        MarkerInfo markerInfo4 = new MarkerInfo(new PointCoordinate(50f, 50f), markerSize, new MarkerData("This is a marker data"));
-
-        List<MarkerInfo> markerInfos = new ArrayList<>();
-        markerInfos.add(markerInfo1);
-        markerInfos.add(markerInfo2);
-        markerInfos.add(markerInfo3);
-        markerInfos.add(markerInfo4);
-
-        mapPages.add(new MapPage(markerInfos));
-        mapPages.add(new MapPage(markerInfos));
-
+        MapInformation mapInformation = new MapInformation();
+        mapInformation.url = "https://nofile.io/f/VCPDtZ1DowV/map.pdf";
+        HashMap<String, MapPage> pageHashMap = new LinkedHashMap<>();
+        pageHashMap.put("DWG", dwg());
+        pageHashMap.put("BIM Data", bimData());
+        pageHashMap.put("360 ", threeSixty());
+        pageHashMap.put("VR", vr());
+        pageHashMap.put("AR", ar());
+        mapInformation.mapInfo = (List<HashMap<String, MapPage>>) pageHashMap;
         Gson gson = new Gson();
-        String json = gson.toJson(mapPages);
-
+        String json = gson.toJson(mapInformation);
         System.out.println(json);
 
+    }
+
+    private MapPage ar() {
+        ArrayList<MarkerInfo> markerInfos = new ArrayList<>();
+        markerInfos.add(new MarkerInfo(new PointCoordinate(50f, 60f), new MarkerSize(32, 32), MarkerInfo.MarkerType.INFO, new MarkerData("")));
+        markerInfos.add(new MarkerInfo(new PointCoordinate(17f, 10f), new MarkerSize(32, 32), MarkerInfo.MarkerType.HYPERLINK, new MarkerData("")));
+        markerInfos.add(new MarkerInfo(new PointCoordinate(50f, 50f), new MarkerSize(32, 32), MarkerInfo.MarkerType.INFO, new MarkerData("")));
+        markerInfos.add(new MarkerInfo(new PointCoordinate(17f, 10f), new MarkerSize(32, 32), MarkerInfo.MarkerType.HYPERLINK, new MarkerData("")));
+        MapPage mapPage = new MapPage(markerInfos);
+        return mapPage;
+    }
+
+    private MapPage vr() {
+        ArrayList<MarkerInfo> markerInfos = new ArrayList<>();
+        markerInfos.add(new MarkerInfo(new PointCoordinate(50f, 60f), new MarkerSize(32, 32), MarkerInfo.MarkerType.INFO, new MarkerData("")));
+        markerInfos.add(new MarkerInfo(new PointCoordinate(17f, 10f), new MarkerSize(32, 32), MarkerInfo.MarkerType.HYPERLINK, new MarkerData("")));
+        MapPage mapPage = new MapPage(markerInfos);
+        return mapPage;
+    }
+
+    private MapPage bimData() {
+        ArrayList<MarkerInfo> markerInfos = new ArrayList<>();
+        markerInfos.add(new MarkerInfo(new PointCoordinate(50f, 50f), new MarkerSize(32, 32), MarkerInfo.MarkerType.INFO, new MarkerData("")));
+        markerInfos.add(new MarkerInfo(new PointCoordinate(17f, 10f), new MarkerSize(32, 32), MarkerInfo.MarkerType.INFO, new MarkerData("")));
+        MapPage mapPage = new MapPage(markerInfos);
+        return mapPage;
+    }
+
+    private MapPage threeSixty() {
+        ArrayList<MarkerInfo> markerInfos = new ArrayList<>();
+        MarkerData markerData = new MarkerData("");
+        markerData.redirectUrl = "http://pano-dev.autodesk.com/pano.html?url=jpgs/41391972-49d3-4b52-87fb-cf152de5c032";
+        markerInfos.add(new MarkerInfo(new PointCoordinate(50f, 60f), new MarkerSize(32, 32), MarkerInfo.MarkerType.INFO, markerData));
+        markerInfos.add(new MarkerInfo(new PointCoordinate(17f, 10f), new MarkerSize(32, 32), MarkerInfo.MarkerType.HYPERLINK, markerData));
+        MapPage mapPage = new MapPage(markerInfos);
+        return mapPage;
+    }
+
+    @NonNull
+    private MapPage dwg() {
+        return new MapPage(Collections.emptyList());
     }
 
 }
