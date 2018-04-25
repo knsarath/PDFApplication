@@ -23,9 +23,9 @@ public class QrCodeActivity extends BaseActivity implements  View.OnClickListene
         qr_scan_btn.setOnClickListener(this);
     }
 
-    private void launchMainActivity(String url) {
+    private void launchMainActivity(String qrResult) {
         Intent intent = new Intent(QrCodeActivity.this, MainActivity.class);
-        intent.putExtra("url",url);
+        intent.putExtra("qrResult",qrResult);
         startActivity(intent);
     }
 
@@ -49,10 +49,10 @@ public class QrCodeActivity extends BaseActivity implements  View.OnClickListene
     }
 
     @Override
-    public void onQrCodeScan(String result) {
-        result= "df57c958";
+    public void onQrCodeScan(String qrResult) {
+        qrResult= "df57c958";
         findViewById(R.id.qr_scan_button).setVisibility(View.VISIBLE);
-        launchMainActivity(result);
+        launchMainActivity(qrResult);
     }
 
 }

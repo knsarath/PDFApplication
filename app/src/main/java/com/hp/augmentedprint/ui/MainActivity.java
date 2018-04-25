@@ -1,16 +1,17 @@
 package com.hp.augmentedprint.ui;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Pair;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.hp.augmentedprint.common.AssetConverter;
 import com.hp.augmentedprint.common.FragmentHelper;
 import com.hp.augmentedprint.common.PdfDownloader;
-import com.hp.augmentedprint.data.NetworkInterface;
 import com.hp.augmentedprint.mapschema.MapInformation;
 import com.hp.augmentedprint.pdfmetadata.R;
 import com.hp.augmentedprint.pdfmetadata.databinding.ActivityMainBinding;
@@ -31,26 +32,37 @@ import timber.log.Timber;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private ActivityMainBinding mBinding;
-    private ProgressDialog mProgressDialog;
     private DropDown<String> mStringDropDown;
+    private ProgressBar progressBar;
+    private TextView mDownloadFileInfoTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        mStringDropDown = mBinding.dropDown;
+        initView();
+        apiCall();
+    }
 
-        Intent intent = getIntent();
-        String url = intent.getStringExtra("url");
-
+    private void apiCall() {
+        final String[] fileName = new String[1];
         overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
-        Injector.getNetworkInterface()
-                .mapMetaData(NetworkInterface.META_DATA_URL)
-                .flatMap(mapInformation -> Injector.getNetworkInterface().getQrCodeResult(url)
+        Observable.fromCallable(() -> AssetConverter.loadJSONFromAsset(getApplicationContext()))
+                .flatMap(mapInformation -> Injector.getNetworkInterface().getQrCodeResult(getQrResult())
                         .flatMap(qrDetails -> {
                             mapInformation.url = qrDetails.getData().getDownloadLink();
-                            return Observable.fromCallable(()->mapInformation);
+                            fileName[0] =qrDetails.getData().getFileName();
+                            return Observable.fromCallable(() -> mapInformation);
                         }))
+                .doOnNext((MapInformation mapInformation) -> {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String text = "downloading " + fileName[0];
+                            mDownloadFileInfoTextView.setText(text);
+                        }
+                    });
+                })
                 .concatMap(mapInformation ->
                         PdfDownloader.downloadAndSavePDF(mapInformation.url)
                                 .flatMap(bytes -> Observable.fromCallable(() -> new Pair<>(mapInformation, bytes))))
@@ -91,22 +103,35 @@ public class MainActivity extends AppCompatActivity {
                                     .toContainer(R.id.container)
                                     .setFragment(PDFMapFragment.createInstance(mapPage, mapInformationPair.second))
                                     .withAnimation(false)
-                .commit();
+                                    .commit();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Timber.d("on Complete");
+                    }
+                });
     }
-}
 
-    @Override
-    public void onError(Throwable e) {
-        Timber.e(e.getMessage());
+    private void initView() {
+        mStringDropDown = mBinding.dropDown;
+        progressBar = findViewById(R.id.download_file_progress_bar);
+        mDownloadFileInfoTextView = findViewById(R.id.download_file_info_text_view);
+
     }
 
-    @Override
-    public void onComplete() {
-        Timber.d("on Complete");
-    }
-});
-
-
+    private String getQrResult() {
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("qrResult")) {
+            return intent.getStringExtra("qrResult");
+        }
+        return "";
     }
 
     @Override

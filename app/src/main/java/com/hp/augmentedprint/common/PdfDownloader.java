@@ -19,6 +19,11 @@ import timber.log.Timber;
  */
 
 public class PdfDownloader {
+    private static int mDownloadPercentage;
+
+    public static String getmDownloadPercentage() {
+        return String.valueOf(mDownloadPercentage);
+    }
     public static Observable<Uri> downloadAndSavePDF(final String url) {
         return Observable.fromCallable(() -> {
             File file = downloadFile(url);
@@ -57,7 +62,9 @@ public class PdfDownloader {
             fileOutput.write(buffer, 0, bufferLength);
             downloadedSize += bufferLength;
             per = ((float) downloadedSize / totalsize) * 100;
-            String message = "Total PDF File size  : " + (totalsize / 1024) + " KB\n\nDownloading PDF " + (int) per + "percentage complete";
+            mDownloadPercentage = (int) per;
+            String message = "Total PDF File size  : " + (totalsize / 1024) + " KB\n" +
+                    "\nDownloading PDF " + (int) per + "percentage complete";
             Timber.d(message);
         }
         // close the output stream when complete //

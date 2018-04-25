@@ -1,6 +1,5 @@
 package com.hp.augmentedprint.schema;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -8,55 +7,54 @@ import com.google.gson.annotations.SerializedName;
  */
 public class QrData {
     @SerializedName("id")
-    @Expose
     private Integer id;
+
     @SerializedName("qr_code")
-    @Expose
     private String qrCode;
-    @SerializedName("status")
-    @Expose
-    private String status;
+
     @SerializedName("file_name")
-    @Expose
     private String fileName;
+
+    @SerializedName("status")
+    private String status;
+
     @SerializedName("content_type")
-    @Expose
     private String contentType;
+
     @SerializedName("project_name")
-    @Expose
     private String projectName;
+
     @SerializedName("project_number")
-    @Expose
     private Integer projectNumber;
+
     @SerializedName("client_name")
-    @Expose
     private String clientName;
+
     @SerializedName("orginization_name")
-    @Expose
     private String orginizationName;
+
     @SerializedName("orginization_description")
-    @Expose
     private String orginizationDescription;
+
     @SerializedName("author")
-    @Expose
     private String author;
+
     @SerializedName("bulding_name")
-    @Expose
     private String buldingName;
+
     @SerializedName("project_address")
-    @Expose
     private String projectAddress;
+
     @SerializedName("project_status")
-    @Expose
     private String projectStatus;
+
     @SerializedName("project_issue_date")
-    @Expose
     private String projectIssueDate;
+
     @SerializedName("initial_investment")
-    @Expose
     private Integer initialInvestment;
+
     @SerializedName("download_link")
-    @Expose
     private String downloadLink;
 
     public Integer getId() {

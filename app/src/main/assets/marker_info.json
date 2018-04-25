@@ -1,93 +1,168 @@
-[
-  {
-    "marker_info_list": [
-      {
-        "marker_position": {
-          "leftPercentage": 66.0,
-          "topPercentage": 17.0
-        },
-        "marker_size": {
-          "height": 32,
-          "width": 32
-        },
-        "marker_metadata": {
-          "data": "This is a marker data"
-        }
+{
+  "map_info": [
+    {
+      "DWG": {
+        "marker_info_list": []
       },
-      {
-        "marker_position": {
-          "leftPercentage": 30.0,
-          "topPercentage": 20.0
-        },
-        "marker_size": {
-          "height": 32,
-          "width": 32
-        },
-        "marker_metadata": {
-          "data": "This is a marker data"
-        }
+      "BIM Data": {
+        "marker_info_list": [
+          {
+            "marker_position": {
+              "leftPercentage": 50,
+              "topPercentage": 50
+            },
+            "marker_size": {
+              "height": 32,
+              "width": 32
+            },
+            "marker_metadata": {
+              "data": ""
+            },
+            "markerType": "info"
+          },
+          {
+            "marker_position": {
+              "leftPercentage": 17,
+              "topPercentage": 10
+            },
+            "marker_size": {
+              "height": 32,
+              "width": 32
+            },
+            "marker_metadata": {
+              "data": ""
+            },
+            "markerType": "info"
+          }
+        ]
       },
-      {
-        "marker_position": {
-          "leftPercentage": 25.0,
-          "topPercentage": 35.0
-        },
-        "marker_size": {
-          "height": 32,
-          "width": 32
-        },
-        "marker_metadata": {
-          "data": "This is a marker data"
-        }
+      "360 ": {
+        "marker_info_list": [
+          {
+            "marker_position": {
+              "leftPercentage": 50,
+              "topPercentage": 60
+            },
+            "marker_size": {
+              "height": 32,
+              "width": 32
+            },
+            "marker_metadata": {
+              "data": "",
+              "redirect_uri": "http://pano-dev.autodesk.com/pano.html?url=jpgs/41391972-49d3-4b52-87fb-cf152de5c032"
+            },
+            "markerType": "info"
+          },
+          {
+            "marker_position": {
+              "leftPercentage": 17,
+              "topPercentage": 10
+            },
+            "marker_size": {
+              "height": 32,
+              "width": 32
+            },
+            "marker_metadata": {
+              "data": "",
+              "redirect_uri": "http://pano-dev.autodesk.com/pano.html?url=jpgs/41391972-49d3-4b52-87fb-cf152de5c032"
+            },
+            "markerType": "hyperlink"
+          }
+        ]
       },
-      {
-        "marker_position": {
-          "leftPercentage": 50.0,
-          "topPercentage": 50.0
-        },
-        "marker_size": {
-          "height": 32,
-          "width": 32
-        },
-        "marker_metadata": {
-          "data": "This is a marker data"
-        }
+      "VR": {
+        "marker_info_list": [
+          {
+            "marker_position": {
+              "leftPercentage": 50,
+              "topPercentage": 60
+            },
+            "marker_size": {
+              "height": 32,
+              "width": 32
+            },
+            "marker_metadata": {
+              "data": ""
+            },
+            "markerType": "info"
+          },
+          {
+            "marker_position": {
+              "leftPercentage": 17,
+              "topPercentage": 10
+            },
+            "marker_size": {
+              "height": 32,
+              "width": 32
+            },
+            "marker_metadata": {
+              "data": ""
+            },
+            "markerType": "hyperlink"
+          }
+        ]
+      },
+      "AR": {
+        "marker_info_list": [
+          {
+            "marker_position": {
+              "leftPercentage": 50,
+              "topPercentage": 60
+            },
+            "marker_size": {
+              "height": 32,
+              "width": 32
+            },
+            "marker_metadata": {
+              "data": ""
+            },
+            "markerType": "info"
+          },
+          {
+            "marker_position": {
+              "leftPercentage": 17,
+              "topPercentage": 10
+            },
+            "marker_size": {
+              "height": 32,
+              "width": 32
+            },
+            "marker_metadata": {
+              "data": ""
+            },
+            "markerType": "hyperlink"
+          },
+          {
+            "marker_position": {
+              "leftPercentage": 50,
+              "topPercentage": 50
+            },
+            "marker_size": {
+              "height": 32,
+              "width": 32
+            },
+            "marker_metadata": {
+              "data": ""
+            },
+            "markerType": "info"
+          },
+          {
+            "marker_position": {
+              "leftPercentage": 17,
+              "topPercentage": 10
+            },
+            "marker_size": {
+              "height": 32,
+              "width": 32
+            },
+            "marker_metadata": {
+              "data": ""
+            },
+            "markerType": "hyperlink"
+          }
+        ]
       }
-    ]
-  },
-
-
-  {
-    "marker_info_list": [
-      {
-        "marker_position": {
-          "leftPercentage": 75.0,
-          "topPercentage": 10.0
-        },
-        "marker_size": {
-          "height": 32,
-          "width": 32
-        },
-        "marker_metadata": {
-          "data": "This is a marker data"
-        }
-      },
-      {
-        "marker_position": {
-          "leftPercentage": 10.0,
-          "topPercentage": 72.0
-        },
-        "marker_size": {
-          "height": 32,
-          "width": 32
-        },
-        "marker_metadata": {
-          "data": "This is a marker data"
-        }
-      }
-    ]
-  }
-
-
-
-]
+    }
+  ],
+  "url": "https://s4.nofilecdn.io/g/Q4M6Nvg3fePGrXY8bz5QXx52B91OCovTK1z2w1ctG1Cm49UMtswnDyP24Z6g0JPX/map.pdf"
+}
