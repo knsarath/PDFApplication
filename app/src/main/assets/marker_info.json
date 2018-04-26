@@ -22,8 +22,8 @@
           },
           {
             "marker_position": {
-              "leftPercentage": 17,
-              "topPercentage": 10
+              "leftPercentage": 27,
+              "topPercentage": 40
             },
             "marker_size": {
               "height": 32,
@@ -40,7 +40,7 @@
         "marker_info_list": [
           {
             "marker_position": {
-              "leftPercentage": 50,
+              "leftPercentage": 70,
               "topPercentage": 60
             },
             "marker_size": {
@@ -51,12 +51,42 @@
               "data": "",
               "redirect_uri": "http://pano-dev.autodesk.com/pano.html?url=jpgs/41391972-49d3-4b52-87fb-cf152de5c032"
             },
-            "markerType": "info"
+            "markerType": "hyperlink"
           },
           {
             "marker_position": {
-              "leftPercentage": 17,
-              "topPercentage": 10
+              "leftPercentage": 87,
+              "topPercentage": 50
+            },
+            "marker_size": {
+              "height": 32,
+              "width": 32
+            },
+            "marker_metadata": {
+              "data": "",
+              "redirect_uri": "http://pano-dev.autodesk.com/pano.html?url=jpgs/41391972-49d3-4b52-87fb-cf152de5c032"
+            },
+            "markerType": "hyperlink"
+          },
+          {
+            "marker_position": {
+              "leftPercentage": 60,
+              "topPercentage": 70
+            },
+            "marker_size": {
+              "height": 32,
+              "width": 32
+            },
+            "marker_metadata": {
+              "data": "",
+              "redirect_uri": "http://pano-dev.autodesk.com/pano.html?url=jpgs/41391972-49d3-4b52-87fb-cf152de5c032"
+            },
+            "markerType": "hyperlink"
+          },
+          {
+            "marker_position": {
+              "leftPercentage": 37,
+              "topPercentage": 90
             },
             "marker_size": {
               "height": 32,
@@ -89,7 +119,7 @@
           {
             "marker_position": {
               "leftPercentage": 17,
-              "topPercentage": 10
+              "topPercentage": 40
             },
             "marker_size": {
               "height": 32,
@@ -98,7 +128,7 @@
             "marker_metadata": {
               "data": ""
             },
-            "markerType": "hyperlink"
+            "markerType": "info"
           }
         ]
       },
@@ -120,8 +150,8 @@
           },
           {
             "marker_position": {
-              "leftPercentage": 17,
-              "topPercentage": 10
+              "leftPercentage": 37,
+              "topPercentage": 50
             },
             "marker_size": {
               "height": 32,
@@ -130,7 +160,7 @@
             "marker_metadata": {
               "data": ""
             },
-            "markerType": "hyperlink"
+            "markerType": "info"
           },
           {
             "marker_position": {
@@ -149,7 +179,7 @@
           {
             "marker_position": {
               "leftPercentage": 17,
-              "topPercentage": 10
+              "topPercentage": 50
             },
             "marker_size": {
               "height": 32,
@@ -158,7 +188,7 @@
             "marker_metadata": {
               "data": ""
             },
-            "markerType": "hyperlink"
+            "markerType": "info"
           }
         ]
       }

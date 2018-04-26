@@ -1,4 +1,4 @@
-package com.hp.augmentedprint.ui;
+package com.hp.augmentedprint.ui.fragment;
 
 
 import android.Manifest;
@@ -123,7 +123,7 @@ public class QrCodeFragment extends Fragment implements ZXingScannerView.ResultH
 
     private String getDateTime() {
         Date currentTime = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd:mm:yyyy \n HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE\nd MMM yyyy\nh:mm a");
         return sdf.format( currentTime);
     }
 

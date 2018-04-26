@@ -1,46 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:id="@+id/qr_scanned_data_container"
-    android:background="@color/white">
-    <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:weightSum="3"
-    android:padding="8dp"
-    android:background="@color/white">
-    <ImageView
-        android:id="@+id/qr_scanneg_image_image_view"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_weight="1"
-        android:layout_gravity="center"
-        android:layout_margin="8dp"
-        android:contentDescription="@string/qrcode_scaned_image" />
+    android:background="@color/white"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/gr_scanned_code_text_view"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="12345"
-        android:layout_gravity="center"
-        android:layout_margin="8dp"
-        android:layout_weight="1"/>
-    <TextView
-        android:id="@+id/gr_code_scanned_date_text_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="33/44/234"
-        android:layout_weight="1"
-        android:layout_margin="8dp"
-        android:layout_gravity="center"/>
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <ImageView
+            android:id="@+id/qr_scanneg_image_image_view"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/qrcode_scaned_image" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/gr_scanned_code_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lines="1"
+                android:maxEms="20"
+                android:text="12345" />
+
+            <TextView
+                android:id="@+id/gr_code_scanned_date_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="33/44/234" />
+        </LinearLayout>
+
     </LinearLayout>
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/blue"/>
+        android:background="@color/blue" />
 
 </LinearLayout>

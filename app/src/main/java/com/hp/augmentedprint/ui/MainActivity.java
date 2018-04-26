@@ -4,24 +4,25 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Pair;
-import android.view.ContextMenu;
-import android.view.MenuInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hp.augmentedprint.common.AssetConverter;
+import com.hp.augmentedprint.common.BaseActivity;
 import com.hp.augmentedprint.common.FragmentHelper;
 import com.hp.augmentedprint.common.PdfDownloader;
 import com.hp.augmentedprint.mapschema.MapInformation;
 import com.hp.augmentedprint.pdfmetadata.R;
 import com.hp.augmentedprint.pdfmetadata.databinding.ActivityMainBinding;
 import com.hp.augmentedprint.schema.MapPage;
+import com.hp.augmentedprint.ui.fragment.GalleryFragment;
+import com.hp.augmentedprint.ui.fragment.PDFMapFragment;
 import com.spinner.dropdown.DropDown;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
     private ActivityMainBinding mBinding;
     private DropDown<String> mStringDropDown;
@@ -47,8 +48,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mStringDropDown = mBinding.dropDown;
+        mStringDropDown.setVisibility(View.GONE);
         initView();
         apiCall();
+        Button btn = findViewById(R.id.btn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchWebView("aa");
+            }
+        });
     }
 
     private void apiCall() {
@@ -57,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 .flatMap(mapInformation -> Injector.getNetworkInterface().getQrCodeResult(getQrResult())
                         .flatMap(qrDetails -> {
                             mapInformation.url = qrDetails.getData().getDownloadLink();
-                            mapInformation.filename =qrDetails.getData().getFileName();
+                            mapInformation.filename = qrDetails.getData().getFileName();
                             return Observable.fromCallable(() -> mapInformation);
                         }))
                 .observeOn(AndroidSchedulers.mainThread())
@@ -71,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                                 .flatMap(bytes -> Observable.fromCallable(() -> new Pair<>(mapInformation, bytes))))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(mapInformationUriPair -> mStringDropDown.setVisibility(View.VISIBLE))
                 .subscribe(new DisposableObserver<Pair<MapInformation, Uri>>() {
                     @Override
                     public void onNext(Pair<MapInformation, Uri> mapInformationPair) {
@@ -88,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         }
                         setStringDropDown(mapInformationPair, stringMapPageHashMap, keySet);
-                        launchPDFMapFragment(mapPage , mapInformationPair.second);
+                        launchPDFMapFragment(mapPage, mapInformationPair.second);
                     }
 
                     @Override
@@ -109,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
         mStringDropDown.setItemClickListener(new DropDown.ItemClickListener<String>() {
             @Override
             public void onItemSelected(DropDown dropDown, String selectedItem) {
-                Toast.makeText(getApplicationContext(),selectedItem,Toast.LENGTH_LONG).show();
                 launchPDFMapFragment(stringMapPageHashMap.get(selectedItem), mapInformationPair.second);
             }
 
@@ -119,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void launchPDFMapFragment(MapPage mapPage, Uri mapInformationPair ) {
+    private void launchPDFMapFragment(MapPage mapPage, Uri mapInformationPair) {
         if (mapPage != null) {
             FragmentHelper.builder()
                     .withFragmentManager(getSupportFragmentManager())
@@ -137,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //TODO:change the return value
     private String getQrResult() {
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("qrResult")) {
@@ -158,19 +168,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
             case R.id.home:
                 ReturnHomeActivity();
+                return true;
+            case R.id.list:
+                launchGalleryFragment();
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -178,7 +190,27 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void ReturnHomeActivity() {
+    private void launchGalleryFragment() {
+        FragmentHelper.builder()
+                .setFragment(GalleryFragment.getInstance())
+                .addToBackstack(true)
+                .withFragmentManager(getSupportFragmentManager())
+                .popBackStack(true)
+                .toContainer(R.id.scanner_container)
+                .replace(true)
+                .commit();
+    }
 
+    private void ReturnHomeActivity() {
+//        FragmentHelper.clearAllFragmentFromBackStack(getSupportFragmentManager());
+//        //Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+//        finish();
+//        //startActivity(intent);
+    }
+
+    private void launchWebView(String url) {
+        Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
+        intent.putExtra("redirectUrl", url);
+        startActivity(intent);
     }
 }

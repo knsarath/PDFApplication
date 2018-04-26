@@ -1,4 +1,4 @@
-package com.hp.augmentedprint.ui;
+package com.hp.augmentedprint.ui.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,16 +14,17 @@ import android.view.ViewGroup;
 import com.google.gson.Gson;
 import com.hp.augmentedprint.pdfmetadata.R;
 import com.hp.augmentedprint.schema.StoredQrCodeDetails;
+import com.hp.augmentedprint.ui.adapter.GalleryAdapter;
 
 import java.util.Objects;
 
 /**
  * Created on 25/4/18 by aparna .
  */
-public class GalleryFragment extends Fragment  {
+public class GalleryFragment extends Fragment implements GalleryAdapter.cardViewClickLister  {
     public GalleryFragment() {
     }
-
+    GalleryFragmentListener mGalleryFragmentListner;
     public static GalleryFragment getInstance() {
         return new GalleryFragment();
     }
@@ -39,6 +40,7 @@ public class GalleryFragment extends Fragment  {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mGalleryFragmentListner = (GalleryFragmentListener) context;
     }
 
     public void initRecycleView(View View) {
@@ -50,7 +52,7 @@ public class GalleryFragment extends Fragment  {
         }
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
-        GalleryAdapter adapter = new GalleryAdapter(getActivity(),getStoredData());
+        GalleryAdapter adapter = new GalleryAdapter((GalleryAdapter.cardViewClickLister)this,getStoredData());
         recyclerView.setAdapter(adapter);
     }
 
@@ -64,4 +66,12 @@ public class GalleryFragment extends Fragment  {
     }
 
 
+    @Override
+    public void onCardViewClick(String qrDecode) {
+        mGalleryFragmentListner.launchMainActivity(qrDecode);
+    }
+
+    public interface GalleryFragmentListener {
+        void launchMainActivity(String qrDecode);
+    }
 }

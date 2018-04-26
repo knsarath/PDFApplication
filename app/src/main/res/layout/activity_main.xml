@@ -7,6 +7,11 @@
         android:layout_margin="16dp"
         android:background="@color/white"
         android:orientation="vertical">
+        <Button
+            android:id="@+id/btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"/>
         <com.spinner.dropdown.DropDown
             android:id="@+id/dropDown"
             android:hint=" Select "

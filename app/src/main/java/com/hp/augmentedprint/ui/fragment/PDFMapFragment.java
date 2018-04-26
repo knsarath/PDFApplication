@@ -1,6 +1,8 @@
-package com.hp.augmentedprint.ui;
+package com.hp.augmentedprint.ui.fragment;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,8 +23,10 @@ import com.hp.augmentedprint.pdfmetadata.databinding.MapFragmentBinding;
 import com.hp.augmentedprint.schema.MapPage;
 import com.hp.augmentedprint.schema.MarkerInfo;
 import com.hp.augmentedprint.schema.MarkerView;
+import com.hp.augmentedprint.ui.WebViewActivity;
 
 import java.util.List;
+import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
 
@@ -35,11 +39,18 @@ public class PDFMapFragment extends Fragment implements MarkerClickListener {
     private MapFragmentBinding mBinding;
     private MarkerDrawing mMarkerDrawing;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.map_fragment, container, false);
         return mBinding.getRoot();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
     }
 
     @Override
@@ -64,7 +75,24 @@ public class PDFMapFragment extends Fragment implements MarkerClickListener {
 
     @Override
     public void onMarkerClicked(MarkerView markerView, MarkerInfo markerInfo) {
-        new AlertDialog.Builder(getActivity())
+
+        switch (markerInfo.markerType){
+            case "info":
+                showAlertDialog(markerInfo);
+                break;
+            case "hyperlink":
+                launchWebView(markerInfo.markerData.redirectUrl);
+
+        }
+    }
+    private void launchWebView(String url) {
+        Intent intent = new Intent(getActivity(), WebViewActivity.class);
+        intent.putExtra("redirectUrl",url);
+        startActivity(intent);
+    }
+
+    private void showAlertDialog(MarkerInfo markerInfo) {
+        new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
                 .setTitle("Info")
                 .setMessage(markerInfo.markerData.data)
                 .setPositiveButton("OK", this::dismiss)
@@ -100,4 +128,6 @@ public class PDFMapFragment extends Fragment implements MarkerClickListener {
         }
         return new Pair<>(mapPage, uri);
     }
+
+
 }

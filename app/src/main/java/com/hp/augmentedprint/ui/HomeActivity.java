@@ -9,8 +9,10 @@ import com.google.zxing.Result;
 import com.hp.augmentedprint.common.BaseActivity;
 import com.hp.augmentedprint.common.FragmentHelper;
 import com.hp.augmentedprint.pdfmetadata.R;
+import com.hp.augmentedprint.ui.fragment.GalleryFragment;
+import com.hp.augmentedprint.ui.fragment.QrCodeFragment;
 
-public class HomeActivity extends BaseActivity implements GalleryAdapter.cardViewClickLister, View.OnClickListener, QrCodeFragment.QrCodeListener {
+public class HomeActivity extends BaseActivity implements GalleryFragment.GalleryFragmentListener, View.OnClickListener, QrCodeFragment.QrCodeListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +38,9 @@ public class HomeActivity extends BaseActivity implements GalleryAdapter.cardVie
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.qr_scan_button:
-//                view.setVisibility(View.GONE);
-//                findViewById(R.id.gallery_button).setVisibility(View.GONE);
                 launchQrScannerFragment();
                 break;
             case R.id.gallery_button:
-//                view.setVisibility(View.GONE);
-//                findViewById(R.id.gallery_button).setVisibility(View.GONE);
                 launchGalleryFragment();
                 break;
 
@@ -83,13 +81,7 @@ public class HomeActivity extends BaseActivity implements GalleryAdapter.cardVie
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-//        findViewById(R.id.qr_scan_button).setVisibility(View.VISIBLE);
-//        findViewById(R.id.gallery_button).setVisibility(View.VISIBLE);
+
     }
 
-
-    @Override
-    public void onCardViewClick(String qrDecode) {
-        launchMainActivity(qrDecode);
-    }
 }

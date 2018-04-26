@@ -1,6 +1,5 @@
-package com.hp.augmentedprint.ui;
+package com.hp.augmentedprint.ui.adapter;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,12 +18,12 @@ import java.util.ArrayList;
 /**
  * Created on 25/4/18 by aparna .
  */
-class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
+public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
 
     private ArrayList<StoredQrCodeDetail> mList;
     cardViewClickLister mCardViewClickLister;
 
-    public GalleryAdapter(Context context, StoredQrCodeDetails storedData) {
+    public GalleryAdapter(cardViewClickLister context, StoredQrCodeDetails storedData) {
         mCardViewClickLister = (cardViewClickLister) context;
         if (storedData != null) {
             mList = storedData.getStoredQrCodeDetails();
@@ -43,7 +42,7 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         StoredQrCodeDetail QrCodeDetail = mList.get(position);
-//        holder.mQrCodeImage =;
+        holder.mQrCodeImage.setImageResource(R.drawable.qr_code);
         holder.mQrDeCode.setText(QrCodeDetail.getDecodeData());
         holder.mQrCodedDate.setText(QrCodeDetail.getScannedDate());
         holder.mContainer.setOnClickListener(v -> {
@@ -77,7 +76,7 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
         }
     }
 
-    interface cardViewClickLister {
+    public interface cardViewClickLister {
         void onCardViewClick(String qrDecode);
     }
 }
