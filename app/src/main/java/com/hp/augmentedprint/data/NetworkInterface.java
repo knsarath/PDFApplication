@@ -1,7 +1,7 @@
 package com.hp.augmentedprint.data;
 
 import com.hp.augmentedprint.mapschema.MapInformation;
-import com.hp.augmentedprint.schema.QrDetails;
+import com.hp.augmentedprint.schema.QrDetail;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -27,6 +27,6 @@ public static final String
     Observable<Response<ResponseBody>> downloadFile(@Url String fileUrl);
 
     @GET("/api/v1/print_files/{id}")
-    Observable<QrDetails> getQrCodeResult(@Path("id") String apiKey);
+    Observable<QrDetail> getQrCodeResult(@Path("id") String apiKey);
 
 }

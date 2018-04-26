@@ -16,6 +16,8 @@ public class MapInformation {
     @SerializedName("url")
     public String url;
 
+    public String filename;
+
     @Override
     public String toString() {
         return "MapInformation{" +

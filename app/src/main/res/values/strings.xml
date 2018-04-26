@@ -2,4 +2,8 @@
     <string name="app_name">PDF Application</string>
     <string name="splash_screen_title">Augmented Print \nBy</string>
     <string name="scan">Scan</string>
+    <string name="gallery">gallery</string>
+    <string name="qrcode_scaned_image">qrcode scaned image</string>
+    <string name="empty_list">There is no scanned qrcode.Please scan.</string>
+    <string name="home">Home</string>
 </resources>

@@ -52,13 +52,25 @@ public class MarkerDrawer implements MarkerDrawing, View.OnClickListener {
         int width = (int) dpToPx(markerInfo.markerSize.width);
         int height = (int) dpToPx(markerInfo.markerSize.height);
         markerView.setLayoutParams(new LinearLayout.LayoutParams(width, height));
-        markerView.setBackgroundDrawable(ContextCompat.getDrawable(markerView.getContext(), R.drawable.ic_info_outline_black_24dp));
+        int icon = getMarkerIcon(markerInfo.markerType);
+        markerView.setBackgroundDrawable(ContextCompat.getDrawable(markerView.getContext(), icon));
         markerView.setVisibility(View.GONE);
         markerView.setMarkerInfo(markerInfo);
         markerView.setOnClickListener(this);
         if (mMarkers == null) mMarkers = new ArrayList<>();
         mMarkers.add(markerView);
         mMarkingCanvas.addView(markerView);
+    }
+
+    private int getMarkerIcon(String markerType) {
+        switch (markerType) {
+            case "info":
+                return R.drawable.ic_info_outline_black_24dp;
+            case "hyperlink":
+                return R.drawable.marker_eye;
+            default:
+                return R.drawable.ic_info_outline_black_24dp;
+        }
     }
 
     @Override

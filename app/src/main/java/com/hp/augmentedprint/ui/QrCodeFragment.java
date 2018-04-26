@@ -3,6 +3,7 @@ package com.hp.augmentedprint.ui;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,9 +15,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.google.zxing.Result;
 import com.hp.augmentedprint.pdfmetadata.R;
+import com.hp.augmentedprint.schema.StoredQrCodeDetail;
+import com.hp.augmentedprint.schema.StoredQrCodeDetails;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -31,7 +39,7 @@ public class QrCodeFragment extends Fragment implements ZXingScannerView.ResultH
     private QrCodeListener mQrCodeListener;
 
     public interface QrCodeListener{
-        public void onQrCodeScan(String result);
+        public void onQrCodeScan(Result result);
     }
     private static final int REQUEST_CAMERA = 1;
     private ZXingScannerView mScannerView;
@@ -76,12 +84,49 @@ public class QrCodeFragment extends Fragment implements ZXingScannerView.ResultH
     }
     @Override
     public void handleResult(Result result) {
-        Toast.makeText(getContext(), result.getText(), Toast.LENGTH_LONG).show();
         if (mQrCodeListener != null) {
-            mQrCodeListener.onQrCodeScan(result.getText());
+            mQrCodeListener.onQrCodeScan(result);
         }
+        storeResultToSharedPreferences(result);
         Objects.requireNonNull(getActivity()).onBackPressed();
     }
+
+    private void storeResultToSharedPreferences(Result qrResult) {
+        SharedPreferences preferences = Objects.requireNonNull(getContext()).getSharedPreferences(
+                "PDFApplication", 0);
+        ArrayList<StoredQrCodeDetail> list = ConvertToList(preferences.getString("storedQRcodeDetailJson",""));
+        StoredQrCodeDetail qrCodeDetail = new StoredQrCodeDetail(qrResult.getText(),getDateTime());
+        if (list != null) {
+            list.add(qrCodeDetail);
+        }else{
+            list = new ArrayList<StoredQrCodeDetail>();
+            list.add(qrCodeDetail);
+        }
+        StoredQrCodeDetails storedQrCodeDetails = new StoredQrCodeDetails(list);
+        Gson gson = new Gson();
+        String data = gson.toJson(storedQrCodeDetails);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("storedQRcodeDetailJson",data);
+        editor.apply();
+    }
+
+    private ArrayList<StoredQrCodeDetail> ConvertToList(String storedQRCodeDetailJson) {
+        if(storedQRCodeDetailJson.equalsIgnoreCase("")){
+            return null;
+        }
+        Gson gson = new Gson();
+        StoredQrCodeDetails storedQrCodeDetails = gson.fromJson(String.valueOf(storedQRCodeDetailJson), StoredQrCodeDetails.class);
+        return storedQrCodeDetails.getStoredQrCodeDetails();
+
+    }
+
+
+    private String getDateTime() {
+        Date currentTime = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd:mm:yyyy \n HH:mm:ss");
+        return sdf.format( currentTime);
+    }
+
     @Override
     public void onPause() {
         super.onPause();
