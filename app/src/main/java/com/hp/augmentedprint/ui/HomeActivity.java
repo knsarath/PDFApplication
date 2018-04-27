@@ -15,7 +15,7 @@ import com.hp.augmentedprint.ui.fragment.HomeButtonsFragment;
 import com.hp.augmentedprint.ui.fragment.QrCodeFragment;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
-public class HomeActivity extends BaseActivity implements HomeButtonsFragment.HomeButtonsFragmentListener,GalleryFragment.GalleryFragmentListener, View.OnClickListener, QrCodeFragment.QrCodeListener {
+public class HomeActivity extends BaseActivity implements HomeButtonsFragment.HomeButtonsFragmentListener,GalleryFragment.GalleryFragmentListener, QrCodeFragment.QrCodeListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,30 +35,11 @@ public class HomeActivity extends BaseActivity implements HomeButtonsFragment.Ho
                 .commit();
     }
 
-//    private void initView() {
-//        Button qr_scan_btn = findViewById(R.id.qr_scan_button);
-//        qr_scan_btn.setOnClickListener(this);
-//        Button gallery_btn = findViewById(R.id.gallery_button);
-//        gallery_btn.setOnClickListener(this);
-//    }
 
     public void launchMainActivity(String qrResult) {
         Intent intent = new Intent(HomeActivity.this, MainActivity.class);
         intent.putExtra("qrResult",qrResult);
         startActivity(intent);
-    }
-
-    @Override
-    public void onClick(View view) {
-//        switch (view.getId()){
-//            case R.id.qr_scan_button:
-//                launchQrScannerFragment();
-//                break;
-//            case R.id.gallery_button:
-//                launchGalleryFragment();
-//                break;
-//
-//        }
     }
 
     public void launchGalleryFragment() {

@@ -1,6 +1,5 @@
 package com.hp.augmentedprint.ui;
 
-import android.Manifest;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hp.augmentedprint.App;
 import com.hp.augmentedprint.common.AssetConverter;
@@ -29,20 +27,20 @@ import com.hp.augmentedprint.ui.fragment.HomeButtonsFragment;
 import com.hp.augmentedprint.ui.fragment.PDFMapFragment;
 import com.hp.augmentedprint.ui.fragment.WebViewFragment;
 import com.spinner.dropdown.DropDown;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Set;
 
 import io.reactivex.Completable;
+import io.reactivex.CompletableSource;
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
@@ -70,28 +68,6 @@ public class MainActivity extends BaseActivity implements PDFMapFragment.PDFMapF
         listenWebViewlaunch();
     }
 
-    private void listenWebViewlaunch() {
-        addToDisposable(App.mRxBus.listenFor(AppBroadCast.NotificationType.LAUNCH_WEB_VIEW)
-                .filter(notification -> notification.getData() instanceof String)
-                .map(notification -> (String) notification.getData())
-                .subscribeWith(new DisposableObserver<String>() {
-                    @Override
-                    public void onNext(String s) {
-                        launchWebView(s);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                }));
-    }
-
     private void downloadPDF() {
         Completable.fromAction(() -> {
             String text = "Preparing Download...";
@@ -114,6 +90,15 @@ public class MainActivity extends BaseActivity implements PDFMapFragment.PDFMapF
                                 .flatMap(bytes -> Observable.fromCallable(() -> new Pair<>(mapInformation, bytes))))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .mergeWith(App.mRxBus.listenFor(AppBroadCast.NotificationType.DOWNLOAD_PROGRESS)
+                        .filter(notification -> notification.getData() instanceof Float)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map(notification -> (Float) notification.getData()).flatMap(progress -> {
+                            String progressText = String.format(Locale.getDefault(), "%.2f", progress) + " %";
+                            mBinding.percentage.setText(progressText);
+                            mBinding.downloadFileProgressBar.setProgress(progress.intValue());
+                            return Observable.never();
+                        }))
                 .doOnNext(mapInformationUriPair -> mStringDropDown.setVisibility(View.VISIBLE))
                 .subscribe(new DisposableObserver<Pair<MapInformation, Uri>>() {
                     @Override
@@ -143,9 +128,34 @@ public class MainActivity extends BaseActivity implements PDFMapFragment.PDFMapF
                     @Override
                     public void onComplete() {
                         Timber.d("on Complete");
+                        dispose();
                     }
                 });
     }
+
+
+    private void listenWebViewlaunch() {
+        addToDisposable(App.mRxBus.listenFor(AppBroadCast.NotificationType.LAUNCH_WEB_VIEW)
+                .filter(notification -> notification.getData() instanceof String)
+                .map(notification -> (String) notification.getData())
+                .subscribeWith(new DisposableObserver<String>() {
+                    @Override
+                    public void onNext(String s) {
+                        launchWebView(s);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                }));
+    }
+
 
     public void launchHomeButtonsFragment() {
         FragmentHelper.builder()

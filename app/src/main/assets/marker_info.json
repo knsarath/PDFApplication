@@ -100,38 +100,6 @@
           }
         ]
       },
-      "VR": {
-        "marker_info_list": [
-          {
-            "marker_position": {
-              "leftPercentage": 50,
-              "topPercentage": 60
-            },
-            "marker_size": {
-              "height": 32,
-              "width": 32
-            },
-            "marker_metadata": {
-              "data": ""
-            },
-            "markerType": "info"
-          },
-          {
-            "marker_position": {
-              "leftPercentage": 17,
-              "topPercentage": 40
-            },
-            "marker_size": {
-              "height": 32,
-              "width": 32
-            },
-            "marker_metadata": {
-              "data": ""
-            },
-            "markerType": "info"
-          }
-        ]
-      },
       "AR": {
         "marker_info_list": [
           {

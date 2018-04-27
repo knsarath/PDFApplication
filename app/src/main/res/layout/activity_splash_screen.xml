@@ -20,6 +20,7 @@
         android:textStyle="italic|bold"/>
 
     <ImageView
+        android:layout_marginTop="8dp"
         android:layout_width="122dp"
         android:layout_height="122dp"
         android:src="@drawable/logohp"/>

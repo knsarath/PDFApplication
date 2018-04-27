@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import com.hp.augmentedprint.schema.MapPage;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class MapInformation implements Parcelable {
     @SerializedName("map_info")
-    public List<HashMap<String, MapPage>> mapInfo;
+    public List<LinkedHashMap<String, MapPage>> mapInfo;
     @SerializedName("url")
     public String url;
 

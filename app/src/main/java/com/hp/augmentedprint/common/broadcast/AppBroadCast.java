@@ -47,7 +47,7 @@ public interface AppBroadCast {
     }
 
     enum NotificationType {
-        LAUNCH_WEB_VIEW
+        DOWNLOAD_PROGRESS, LAUNCH_WEB_VIEW
 
 
     }
