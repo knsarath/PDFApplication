@@ -3,8 +3,10 @@ package com.hp.augmentedprint.ui;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.util.Pair;
 import android.view.Menu;
@@ -13,11 +15,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hp.augmentedprint.App;
 import com.hp.augmentedprint.common.AssetConverter;
 import com.hp.augmentedprint.common.BaseActivity;
 import com.hp.augmentedprint.common.FragmentHelper;
+import com.hp.augmentedprint.common.LocalStorage;
 import com.hp.augmentedprint.common.PdfDownloader;
 import com.hp.augmentedprint.common.broadcast.AppBroadCast;
 import com.hp.augmentedprint.mapschema.MapInformation;
@@ -39,8 +43,10 @@ import java.util.Set;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.HttpException;
 import timber.log.Timber;
 
 public class PDFActivity extends BaseActivity implements PDFMapFragment.PDFMapFragmentListener {
@@ -72,6 +78,8 @@ public class PDFActivity extends BaseActivity implements PDFMapFragment.PDFMapFr
             mDownloadFileInfoTextView.setText(text);
         }).andThen(Observable.fromCallable(() -> AssetConverter.loadJSONFromAsset(getApplicationContext())))
                 .flatMap(mapInformation -> Injector.getNetworkInterface().getQrCodeResult(getQrResult())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnError(this::handleHttpError)
                         .flatMap(qrDetails -> {
                             mapInformation.url = qrDetails.getData().getDownloadLink();
                             mapInformation.filename = qrDetails.getData().getFileName();
@@ -79,6 +87,7 @@ public class PDFActivity extends BaseActivity implements PDFMapFragment.PDFMapFr
                         }))
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext((mapInformation) -> {
+                    LocalStorage.storeResultToSharedPreferences(PDFActivity.this, mapInformation.filename);
                     String text = "Downloading " + mapInformation.filename;
                     mDownloadFileInfoTextView.setText(text);
                 })
@@ -131,6 +140,20 @@ public class PDFActivity extends BaseActivity implements PDFMapFragment.PDFMapFr
                 });
     }
 
+    private void handleHttpError(Throwable throwable) {
+        Timber.e("Error: " + throwable);
+        if (throwable instanceof HttpException) {
+            HttpException httpException = (HttpException) throwable;
+            if (httpException.code() == 404) {
+                mBinding.downloadFileProgressBar.setVisibility(View.INVISIBLE);
+                mBinding.downloadFileInfoTextView.setTextColor(Color.RED);
+                Toast.makeText(getApplicationContext(), "The QR cod you scanned is invalid.. Please try a Different QR Code", Toast.LENGTH_LONG).show();
+                mBinding.downloadFileInfoTextView.setText("Map not found, Invalid QR Code!!");
+                new Handler().postDelayed(() -> startActivity(new Intent(PDFActivity.this, HomeActivity.class)),3000);
+            }
+        }
+    }
+
 
     private void listenWebViewlaunch() {
         addToDisposable(App.mRxBus.listenFor(AppBroadCast.NotificationType.LAUNCH_WEB_VIEW)
@@ -161,7 +184,6 @@ public class PDFActivity extends BaseActivity implements PDFMapFragment.PDFMapFr
         mStringDropDown.setItemClickListener(new DropDown.ItemClickListener<String>() {
             @Override
             public void onItemSelected(DropDown dropDown, String selectedItem) {
-                progressBar.bringToFront();
                 launchPDFMapFragment(stringMapPageHashMap.get(selectedItem), mapInformationPair.second);
             }
 
@@ -184,19 +206,17 @@ public class PDFActivity extends BaseActivity implements PDFMapFragment.PDFMapFr
     }
 
     private void initView() {
-
         progressBar = findViewById(R.id.download_file_progress_bar);
         mDownloadFileInfoTextView = findViewById(R.id.download_file_info_text_view);
-
     }
 
     //TODO:change the return value
     private String getQrResult() {
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("qrResult")) {
-//            return intent.getStringExtra("qrResult");
+        if (intent != null && intent.hasExtra(HomeActivity.QR_RESULT)) {
+            return intent.getStringExtra(HomeActivity.QR_RESULT);
         }
-        return "df57c958";
+        return null;
     }
 
     @Override

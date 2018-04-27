@@ -87,45 +87,10 @@ public class QrCodeFragment extends Fragment implements ZXingScannerView.ResultH
         if (mQrCodeListener != null) {
             mQrCodeListener.onQrCodeScan(result);
         }
-        storeResultToSharedPreferences(result);
         Objects.requireNonNull(getActivity()).onBackPressed();
     }
 
-    private void storeResultToSharedPreferences(Result qrResult) {
-        SharedPreferences preferences = Objects.requireNonNull(getContext()).getSharedPreferences(
-                "PDFApplication", 0);
-        ArrayList<StoredQrCodeDetail> list = ConvertToList(preferences.getString("storedQRcodeDetailJson",""));
-        StoredQrCodeDetail qrCodeDetail = new StoredQrCodeDetail(qrResult.getText(),getDateTime());
-        if (list != null) {
-            list.add(qrCodeDetail);
-        }else{
-            list = new ArrayList<StoredQrCodeDetail>();
-            list.add(qrCodeDetail);
-        }
-        StoredQrCodeDetails storedQrCodeDetails = new StoredQrCodeDetails(list);
-        Gson gson = new Gson();
-        String data = gson.toJson(storedQrCodeDetails);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("storedQRcodeDetailJson",data);
-        editor.apply();
-    }
 
-    private ArrayList<StoredQrCodeDetail> ConvertToList(String storedQRCodeDetailJson) {
-        if(storedQRCodeDetailJson.equalsIgnoreCase("")){
-            return null;
-        }
-        Gson gson = new Gson();
-        StoredQrCodeDetails storedQrCodeDetails = gson.fromJson(String.valueOf(storedQRCodeDetailJson), StoredQrCodeDetails.class);
-        return storedQrCodeDetails.getStoredQrCodeDetails();
-
-    }
-
-
-    private String getDateTime() {
-        Date currentTime = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE d MMM yyyy \nh:mm a");
-        return sdf.format( currentTime);
-    }
 
     @Override
     public void onPause() {

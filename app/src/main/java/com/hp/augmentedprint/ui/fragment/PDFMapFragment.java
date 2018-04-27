@@ -88,17 +88,11 @@ public class PDFMapFragment extends Fragment implements MarkerClickListener {
         }
     }
 
-    private void launchWebView(String url) {
-//        Intent intent = new Intent(getActivity(), WebViewActivity.class);
-//        intent.putExtra("redirectUrl",url);
-//        startActivity(intent);
-
-    }
 
     private void showAlertDialog(MarkerInfo markerInfo) {
         new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
                 .setTitle("Info")
-                .setMessage(markerInfo.markerData.data)
+                .setMessage("BIM Information goes here!!")
                 .setPositiveButton("OK", this::dismiss)
                 .setNegativeButton("CANCEL", this::dismiss)
                 .show();

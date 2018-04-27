@@ -18,6 +18,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 public class HomeActivity extends BaseActivity implements HomeButtonsFragment.HomeButtonsFragmentListener, GalleryFragment.GalleryFragmentListener, QrCodeFragment.QrCodeListener {
 
     public static final String SCREEN = "screen";
+    public static final String QR_RESULT = "qrResult";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class HomeActivity extends BaseActivity implements HomeButtonsFragment.Ho
 
     public void launchMainActivity(String qrResult) {
         Intent intent = new Intent(HomeActivity.this, PDFActivity.class);
-        intent.putExtra("qrResult", qrResult);
+        intent.putExtra(QR_RESULT, qrResult);
         startActivity(intent);
         finish();
     }
