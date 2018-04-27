@@ -39,7 +39,7 @@ public class QrCodeFragment extends Fragment implements ZXingScannerView.ResultH
     private QrCodeListener mQrCodeListener;
 
     public interface QrCodeListener{
-        public void onQrCodeScan(Result result);
+        void onQrCodeScan(Result result);
     }
     private static final int REQUEST_CAMERA = 1;
     private ZXingScannerView mScannerView;
@@ -123,7 +123,7 @@ public class QrCodeFragment extends Fragment implements ZXingScannerView.ResultH
 
     private String getDateTime() {
         Date currentTime = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE\nd MMM yyyy\nh:mm a");
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE d MMM yyyy \nh:mm a");
         return sdf.format( currentTime);
     }
 

@@ -14,10 +14,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hp.augmentedprint.App;
 import com.hp.augmentedprint.common.AssetConverter;
 import com.hp.augmentedprint.common.BaseActivity;
 import com.hp.augmentedprint.common.FragmentHelper;
 import com.hp.augmentedprint.common.PdfDownloader;
+import com.hp.augmentedprint.common.broadcast.AppBroadCast;
 import com.hp.augmentedprint.mapschema.MapInformation;
 import com.hp.augmentedprint.pdfmetadata.R;
 import com.hp.augmentedprint.pdfmetadata.databinding.ActivityMainBinding;
@@ -39,6 +41,8 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
@@ -63,6 +67,29 @@ public class MainActivity extends BaseActivity implements PDFMapFragment.PDFMapF
     private void apiCall() {
         overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
         downloadPDF();
+        listenWebViewlaunch();
+    }
+
+    private void listenWebViewlaunch() {
+        addToDisposable(App.mRxBus.listenFor(AppBroadCast.NotificationType.LAUNCH_WEB_VIEW)
+                .filter(notification -> notification.getData() instanceof String)
+                .map(notification -> (String) notification.getData())
+                .subscribeWith(new DisposableObserver<String>() {
+                    @Override
+                    public void onNext(String s) {
+                        launchWebView(s);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                }));
     }
 
     private void downloadPDF() {
@@ -145,6 +172,7 @@ public class MainActivity extends BaseActivity implements PDFMapFragment.PDFMapF
             public void onNothingSelected() {
             }
         });
+        mStringDropDown.setSelectedIndex(0);
     }
 
     private void launchPDFMapFragment(MapPage mapPage, Uri mapInformationPair) {

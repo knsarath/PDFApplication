@@ -14,9 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hp.augmentedprint.App;
 import com.hp.augmentedprint.MarkerClickListener;
 import com.hp.augmentedprint.MarkerDrawer;
 import com.hp.augmentedprint.MarkerDrawing;
+import com.hp.augmentedprint.common.broadcast.AppBroadCast;
 import com.hp.augmentedprint.pdfmetadata.R;
 import com.hp.augmentedprint.pdfmetadata.databinding.MapFragmentBinding;
 import com.hp.augmentedprint.schema.MapPage;
@@ -75,15 +77,17 @@ public class PDFMapFragment extends Fragment implements MarkerClickListener {
     @Override
     public void onMarkerClicked(MarkerView markerView, MarkerInfo markerInfo) {
 
-        switch (markerInfo.markerType){
+        switch (markerInfo.markerType) {
             case "info":
                 showAlertDialog(markerInfo);
                 break;
             case "hyperlink":
-                mPDFMapFragmentListener.launchWebViewFragment(markerInfo.markerData.redirectUrl);
+                App.mRxBus.send(new AppBroadCast.Notification(AppBroadCast.NotificationType.LAUNCH_WEB_VIEW, markerInfo.markerData.redirectUrl));
+                break;
 
         }
     }
+
     private void launchWebView(String url) {
 //        Intent intent = new Intent(getActivity(), WebViewActivity.class);
 //        intent.putExtra("redirectUrl",url);
@@ -113,7 +117,7 @@ public class PDFMapFragment extends Fragment implements MarkerClickListener {
     public static PDFMapFragment createInstance(MapPage mapPage, Uri uri) {
         PDFMapFragment pdfMapFragment = new PDFMapFragment();
         Bundle args = new Bundle();
-        args.putSerializable("map_info", mapPage);
+        args.putParcelable("map_info", mapPage);
         args.putString("uri", uri.toString());
         pdfMapFragment.setArguments(args);
         return pdfMapFragment;
@@ -123,12 +127,13 @@ public class PDFMapFragment extends Fragment implements MarkerClickListener {
         MapPage mapPage = null;
         Uri uri = null;
         if (getArguments() != null) {
-            mapPage = (MapPage) getArguments().getSerializable("map_info");
+            mapPage = getArguments().getParcelable("map_info");
             uri = Uri.parse(getArguments().getString("uri"));
         }
         return new Pair<>(mapPage, uri);
     }
-    public interface  PDFMapFragmentListener{
+
+    public interface PDFMapFragmentListener {
         void launchWebViewFragment(String url);
     }
 }

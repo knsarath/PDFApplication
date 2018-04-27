@@ -11,7 +11,9 @@ import dagger.android.AndroidInjectionModule;
 /**
  * Created by sarath on 19/3/18.
  */
+@ApplicationScope
 @Component(modules = {
+        AppModule.class,
         AndroidInjectionModule.class,
         ActivityBuilderModule.class
 })

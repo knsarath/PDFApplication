@@ -3,6 +3,7 @@ package com.hp.augmentedprint;
 import android.app.Activity;
 import android.app.Application;
 
+import com.hp.augmentedprint.common.broadcast.RxBus;
 import com.hp.augmentedprint.di.DaggerAppComponent;
 
 import javax.inject.Inject;
@@ -19,6 +20,8 @@ import timber.log.Timber;
 public class App extends Application implements HasActivityInjector {
     @Inject
     DispatchingAndroidInjector<Activity> mActivityDispatchingAndroidInjector;
+
+    public static RxBus mRxBus = new RxBus();
 
     @Override
     public void onCreate() {

@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/qr_scanned_data_container"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:orientation="vertical">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/qr_scanned_data_container"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:clickable="true"
+              android:foreground="?selectableItemBackground"
+              android:background="@color/white"
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,14 +38,15 @@
                 android:layout_marginTop="8dp"
                 android:lines="1"
                 android:maxEms="20"
-                android:text="12345" />
+                android:textStyle="bold"
+                tools:text="12345" />
 
             <TextView
                 android:id="@+id/gr_code_scanned_date_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="33/44/234" />
+                tools:text="33/44/234" />
         </LinearLayout>
 
     </LinearLayout>
