@@ -147,7 +147,7 @@ public class PDFActivity extends BaseActivity implements PDFMapFragment.PDFMapFr
             if (httpException.code() == 404) {
                 mBinding.downloadFileProgressBar.setVisibility(View.INVISIBLE);
                 mBinding.downloadFileInfoTextView.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(), "The QR cod you scanned is invalid.. Please try a Different QR Code", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "The QR code you scanned is invalid.. Please try a Different QR Code", Toast.LENGTH_LONG).show();
                 new Handler().postDelayed(() -> {
                     startActivity(new Intent(PDFActivity.this, HomeActivity.class));
                     finish();
