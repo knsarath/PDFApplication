@@ -1,5 +1,6 @@
 package com.hp.augmentedprint.ui;
 
+import android.Manifest;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -9,9 +10,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hp.augmentedprint.common.AssetConverter;
 import com.hp.augmentedprint.common.BaseActivity;
@@ -22,21 +23,27 @@ import com.hp.augmentedprint.pdfmetadata.R;
 import com.hp.augmentedprint.pdfmetadata.databinding.ActivityMainBinding;
 import com.hp.augmentedprint.schema.MapPage;
 import com.hp.augmentedprint.ui.fragment.GalleryFragment;
+import com.hp.augmentedprint.ui.fragment.HomeButtonsFragment;
 import com.hp.augmentedprint.ui.fragment.PDFMapFragment;
+import com.hp.augmentedprint.ui.fragment.WebViewFragment;
 import com.spinner.dropdown.DropDown;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements PDFMapFragment.PDFMapFragmentListener {
     private static final String TAG = "MainActivity";
     private ActivityMainBinding mBinding;
     private DropDown<String> mStringDropDown;
@@ -51,18 +58,18 @@ public class MainActivity extends BaseActivity {
         mStringDropDown.setVisibility(View.GONE);
         initView();
         apiCall();
-        Button btn = findViewById(R.id.btn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchWebView("aa");
-            }
-        });
     }
 
     private void apiCall() {
         overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
-        Observable.fromCallable(() -> AssetConverter.loadJSONFromAsset(getApplicationContext()))
+        downloadPDF();
+    }
+
+    private void downloadPDF() {
+        Completable.fromAction(() -> {
+            String text = "Preparing Download...";
+            mDownloadFileInfoTextView.setText(text);
+        }).andThen(Observable.fromCallable(() -> AssetConverter.loadJSONFromAsset(getApplicationContext())))
                 .flatMap(mapInformation -> Injector.getNetworkInterface().getQrCodeResult(getQrResult())
                         .flatMap(qrDetails -> {
                             mapInformation.url = qrDetails.getData().getDownloadLink();
@@ -71,7 +78,7 @@ public class MainActivity extends BaseActivity {
                         }))
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext((mapInformation) -> {
-                    String text = "\n\n\n\ndownloading " + mapInformation.filename;
+                    String text = "Downloading " + mapInformation.filename;
                     mDownloadFileInfoTextView.setText(text);
                 })
                 .observeOn(Schedulers.io())
@@ -113,12 +120,24 @@ public class MainActivity extends BaseActivity {
                 });
     }
 
+    public void launchHomeButtonsFragment() {
+        FragmentHelper.builder()
+                .setFragment(HomeButtonsFragment.getInstance())
+                .addToBackstack(true)
+                .withFragmentManager(getSupportFragmentManager())
+                .popBackStack(true)
+                .toContainer(R.id.container)
+                .replace(true)
+                .commit();
+    }
+
     private void setStringDropDown(Pair<MapInformation, Uri> mapInformationPair, HashMap<String
             , MapPage> stringMapPageHashMap, Set<String> keySet) {
         mStringDropDown.setItems(new ArrayList<>(keySet));
         mStringDropDown.setItemClickListener(new DropDown.ItemClickListener<String>() {
             @Override
             public void onItemSelected(DropDown dropDown, String selectedItem) {
+                progressBar.bringToFront();
                 launchPDFMapFragment(stringMapPageHashMap.get(selectedItem), mapInformationPair.second);
             }
 
@@ -195,13 +214,13 @@ public class MainActivity extends BaseActivity {
                 .setFragment(GalleryFragment.getInstance())
                 .addToBackstack(true)
                 .withFragmentManager(getSupportFragmentManager())
-                .popBackStack(true)
-                .toContainer(R.id.scanner_container)
+                .toContainer(R.id.container)
                 .replace(true)
                 .commit();
     }
 
     private void ReturnHomeActivity() {
+        launchHomeButtonsFragment();
 //        FragmentHelper.clearAllFragmentFromBackStack(getSupportFragmentManager());
 //        //Intent intent = new Intent(MainActivity.this, HomeActivity.class);
 //        finish();
@@ -212,5 +231,22 @@ public class MainActivity extends BaseActivity {
         Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
         intent.putExtra("redirectUrl", url);
         startActivity(intent);
+    }
+
+    public void launchWebViewFragment(String url) {
+        mStringDropDown.setVisibility(View.GONE);
+        FragmentHelper.builder()
+                .setFragment(WebViewFragment.getInstance(url))
+                .addToBackstack(true)
+                .withFragmentManager(getSupportFragmentManager())
+                .toContainer(R.id.container)
+                .replace(true)
+                .commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mStringDropDown.setVisibility(View.VISIBLE);
     }
 }

@@ -2,7 +2,6 @@ package com.hp.augmentedprint.ui.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,7 +22,6 @@ import com.hp.augmentedprint.pdfmetadata.databinding.MapFragmentBinding;
 import com.hp.augmentedprint.schema.MapPage;
 import com.hp.augmentedprint.schema.MarkerInfo;
 import com.hp.augmentedprint.schema.MarkerView;
-import com.hp.augmentedprint.ui.WebViewActivity;
 
 import java.util.List;
 import java.util.Objects;
@@ -38,6 +36,7 @@ public class PDFMapFragment extends Fragment implements MarkerClickListener {
 
     private MapFragmentBinding mBinding;
     private MarkerDrawing mMarkerDrawing;
+    private PDFMapFragmentListener mPDFMapFragmentListener;
 
 
     @Nullable
@@ -50,7 +49,7 @@ public class PDFMapFragment extends Fragment implements MarkerClickListener {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
+        mPDFMapFragmentListener = (PDFMapFragment.PDFMapFragmentListener) context;
     }
 
     @Override
@@ -81,14 +80,15 @@ public class PDFMapFragment extends Fragment implements MarkerClickListener {
                 showAlertDialog(markerInfo);
                 break;
             case "hyperlink":
-                launchWebView(markerInfo.markerData.redirectUrl);
+                mPDFMapFragmentListener.launchWebViewFragment(markerInfo.markerData.redirectUrl);
 
         }
     }
     private void launchWebView(String url) {
-        Intent intent = new Intent(getActivity(), WebViewActivity.class);
-        intent.putExtra("redirectUrl",url);
-        startActivity(intent);
+//        Intent intent = new Intent(getActivity(), WebViewActivity.class);
+//        intent.putExtra("redirectUrl",url);
+//        startActivity(intent);
+
     }
 
     private void showAlertDialog(MarkerInfo markerInfo) {
@@ -128,6 +128,7 @@ public class PDFMapFragment extends Fragment implements MarkerClickListener {
         }
         return new Pair<>(mapPage, uri);
     }
-
-
+    public interface  PDFMapFragmentListener{
+        void launchWebViewFragment(String url);
+    }
 }

@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="16dp"
         android:background="@color/white"
         android:orientation="vertical">
-        <Button
-            android:id="@+id/btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name"/>
+
         <com.spinner.dropdown.DropDown
             android:id="@+id/dropDown"
-            android:hint=" Select "
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:hint=" Select "
             android:minWidth="200dp"/>
-        <FrameLayout
+
+        <RelativeLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <ProgressBar
-                style="?android:attr/progressBarStyleHorizontal"
                 android:id="@+id/download_file_progress_bar"
+                style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:layout_gravity="center"
+                android:layout_margin="32dp"
                 android:indeterminateOnly="true"
                 android:visibility="visible"/>
 
@@ -36,8 +36,9 @@
                 android:id="@+id/download_file_info_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_gravity="center"/>
-        </FrameLayout>
+                android:layout_below="@id/download_file_progress_bar"
+                android:layout_centerHorizontal="true"
+                tools:text="Downloading"/>
+        </RelativeLayout>
     </LinearLayout>
 </layout>
