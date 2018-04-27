@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.hp.augmentedprint.ui.MainActivity"
+            android:name="com.hp.augmentedprint.ui.PDFActivity"
             android:screenOrientation="portrait">
 
         </activity>

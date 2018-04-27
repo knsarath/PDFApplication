@@ -15,14 +15,31 @@ import com.hp.augmentedprint.ui.fragment.HomeButtonsFragment;
 import com.hp.augmentedprint.ui.fragment.QrCodeFragment;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
-public class HomeActivity extends BaseActivity implements HomeButtonsFragment.HomeButtonsFragmentListener,GalleryFragment.GalleryFragmentListener, QrCodeFragment.QrCodeListener {
+public class HomeActivity extends BaseActivity implements HomeButtonsFragment.HomeButtonsFragmentListener, GalleryFragment.GalleryFragmentListener, QrCodeFragment.QrCodeListener {
+
+    public static final String SCREEN = "screen";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        launchHomeButtonsFragment();
-//        initView();
+        if (getIntent().getExtras() != null) {
+            Screen screen = (Screen) getIntent().getSerializableExtra(SCREEN);
+            if (screen == null)
+                launchHomeButtonsFragment();
+            else
+                switch (screen) {
+                    case GALLERY:
+                        launchGalleryFragment();
+                        break;
+                    default:
+                        launchHomeButtonsFragment();
+                        break;
+                }
+        } else {
+            launchHomeButtonsFragment();
+        }
+
     }
 
     public void launchHomeButtonsFragment() {
@@ -37,9 +54,10 @@ public class HomeActivity extends BaseActivity implements HomeButtonsFragment.Ho
 
 
     public void launchMainActivity(String qrResult) {
-        Intent intent = new Intent(HomeActivity.this, MainActivity.class);
-        intent.putExtra("qrResult",qrResult);
+        Intent intent = new Intent(HomeActivity.this, PDFActivity.class);
+        intent.putExtra("qrResult", qrResult);
         startActivity(intent);
+        finish();
     }
 
     public void launchGalleryFragment() {
@@ -80,5 +98,9 @@ public class HomeActivity extends BaseActivity implements HomeButtonsFragment.Ho
                 });
 
 
+    }
+
+    public enum Screen {
+        HOME, GALLERY
     }
 }

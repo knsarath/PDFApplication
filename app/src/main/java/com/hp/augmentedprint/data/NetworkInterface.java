@@ -16,16 +16,6 @@ import retrofit2.http.Url;
  */
 
 public interface NetworkInterface {
-public static final String
-        META_DATA_URL = "https://gist.githubusercontent.com/knsarath/40eae118b62047617663f819954fee2b/raw/fdbab890d381cdaa834a141d4b4e76f489d88a44/test";
-
-    @GET
-    Observable<MapInformation> mapMetaData(@Url String url);
-
-    @Streaming
-    @GET
-    Observable<Response<ResponseBody>> downloadFile(@Url String fileUrl);
-
     @GET("/api/v1/print_files/{id}")
     Observable<QrDetail> getQrCodeResult(@Path("id") String apiKey);
 

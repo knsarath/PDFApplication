@@ -1,9 +1,11 @@
 package com.hp.augmentedprint.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,18 +37,14 @@ import java.util.Locale;
 import java.util.Set;
 
 import io.reactivex.Completable;
-import io.reactivex.CompletableSource;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class MainActivity extends BaseActivity implements PDFMapFragment.PDFMapFragmentListener {
-    private static final String TAG = "MainActivity";
+public class PDFActivity extends BaseActivity implements PDFMapFragment.PDFMapFragmentListener {
+    private static final String TAG = "PDFActivity";
     private ActivityMainBinding mBinding;
     private DropDown<String> mStringDropDown;
     private ProgressBar progressBar;
@@ -157,17 +155,6 @@ public class MainActivity extends BaseActivity implements PDFMapFragment.PDFMapF
     }
 
 
-    public void launchHomeButtonsFragment() {
-        FragmentHelper.builder()
-                .setFragment(HomeButtonsFragment.getInstance())
-                .addToBackstack(true)
-                .withFragmentManager(getSupportFragmentManager())
-                .popBackStack(true)
-                .toContainer(R.id.container)
-                .replace(true)
-                .commit();
-    }
-
     private void setStringDropDown(Pair<MapInformation, Uri> mapInformationPair, HashMap<String
             , MapPage> stringMapPageHashMap, Set<String> keySet) {
         mStringDropDown.setItems(new ArrayList<>(keySet));
@@ -238,35 +225,21 @@ public class MainActivity extends BaseActivity implements PDFMapFragment.PDFMapF
             case R.id.home:
                 ReturnHomeActivity();
                 return true;
-            case R.id.list:
-                launchGalleryFragment();
-                return true;
             default:
                 return super.onContextItemSelected(item);
         }
 
     }
 
-    private void launchGalleryFragment() {
-        FragmentHelper.builder()
-                .setFragment(GalleryFragment.getInstance())
-                .addToBackstack(true)
-                .withFragmentManager(getSupportFragmentManager())
-                .toContainer(R.id.container)
-                .replace(true)
-                .commit();
-    }
-
     private void ReturnHomeActivity() {
-        launchHomeButtonsFragment();
-//        FragmentHelper.clearAllFragmentFromBackStack(getSupportFragmentManager());
-//        //Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-//        finish();
-//        //startActivity(intent);
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtra(HomeActivity.SCREEN, HomeActivity.Screen.HOME);
+        startActivity(intent);
+        finish();
     }
 
     private void launchWebView(String url) {
-        Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
+        Intent intent = new Intent(PDFActivity.this, WebViewActivity.class);
         intent.putExtra("redirectUrl", url);
         startActivity(intent);
     }
@@ -284,7 +257,18 @@ public class MainActivity extends BaseActivity implements PDFMapFragment.PDFMapF
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        mStringDropDown.setVisibility(View.VISIBLE);
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Exit Confirmation")
+                    .setMessage("Are you sure to quit the App?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        dialog.dismiss();
+                        PDFActivity.super.onBackPressed();
+                    })
+                    .setNegativeButton(" No ", (dialog, which) -> dialog.dismiss())
+                    .show();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

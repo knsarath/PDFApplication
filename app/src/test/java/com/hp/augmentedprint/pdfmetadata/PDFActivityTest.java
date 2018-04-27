@@ -24,7 +24,7 @@ import java.util.List;
  * Created by sarath on 5/3/18.
  */
 @RunWith(JUnit4.class)
-public class MainActivityTest {
+public class PDFActivityTest {
     @Test
     public void testSchema() {
 
