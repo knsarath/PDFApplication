@@ -146,10 +146,12 @@ public class PDFActivity extends BaseActivity implements PDFMapFragment.PDFMapFr
             HttpException httpException = (HttpException) throwable;
             if (httpException.code() == 404) {
                 mBinding.downloadFileProgressBar.setVisibility(View.INVISIBLE);
-                mBinding.downloadFileInfoTextView.setTextColor(Color.RED);
+                mBinding.downloadFileInfoTextView.setVisibility(View.GONE);
                 Toast.makeText(getApplicationContext(), "The QR cod you scanned is invalid.. Please try a Different QR Code", Toast.LENGTH_LONG).show();
-                mBinding.downloadFileInfoTextView.setText("Map not found, Invalid QR Code!!");
-                new Handler().postDelayed(() -> startActivity(new Intent(PDFActivity.this, HomeActivity.class)),3000);
+                new Handler().postDelayed(() -> {
+                    startActivity(new Intent(PDFActivity.this, HomeActivity.class));
+                    finish();
+                }, 3000);
             }
         }
     }

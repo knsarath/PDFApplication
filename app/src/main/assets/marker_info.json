@@ -100,63 +100,67 @@
           }
         ]
       },
-      "AR": {
+      "VR": {
         "marker_info_list": [
           {
             "marker_position": {
-              "leftPercentage": 50,
-              "topPercentage": 60
+              "leftPercentage": 10,
+              "topPercentage": 20
             },
             "marker_size": {
               "height": 32,
               "width": 32
             },
             "marker_metadata": {
-              "data": ""
+              "data": "",
+              "redirect_uri": "http://pano-dev.autodesk.com/pano.html?url=jpgs/41391972-49d3-4b52-87fb-cf152de5c032"
             },
-            "markerType": "info"
+            "markerType": "hyperlink"
+          },
+          {
+            "marker_position": {
+              "leftPercentage": 47,
+              "topPercentage": 30
+            },
+            "marker_size": {
+              "height": 32,
+              "width": 32
+            },
+            "marker_metadata": {
+              "data": "",
+              "redirect_uri": "http://pano-dev.autodesk.com/pano.html?url=jpgs/41391972-49d3-4b52-87fb-cf152de5c032"
+            },
+            "markerType": "hyperlink"
+          },
+          {
+            "marker_position": {
+              "leftPercentage": 20,
+              "topPercentage": 70
+            },
+            "marker_size": {
+              "height": 32,
+              "width": 32
+            },
+            "marker_metadata": {
+              "data": "",
+              "redirect_uri": "http://pano-dev.autodesk.com/pano.html?url=jpgs/41391972-49d3-4b52-87fb-cf152de5c032"
+            },
+            "markerType": "hyperlink"
           },
           {
             "marker_position": {
               "leftPercentage": 37,
-              "topPercentage": 50
+              "topPercentage": 90
             },
             "marker_size": {
               "height": 32,
               "width": 32
             },
             "marker_metadata": {
-              "data": ""
+              "data": "",
+              "redirect_uri": "http://pano-dev.autodesk.com/pano.html?url=jpgs/41391972-49d3-4b52-87fb-cf152de5c032"
             },
-            "markerType": "info"
-          },
-          {
-            "marker_position": {
-              "leftPercentage": 50,
-              "topPercentage": 50
-            },
-            "marker_size": {
-              "height": 32,
-              "width": 32
-            },
-            "marker_metadata": {
-              "data": ""
-            },
-            "markerType": "info"
-          },
-          {
-            "marker_position": {
-              "leftPercentage": 17,
-              "topPercentage": 50
-            },
-            "marker_size": {
-              "height": 32,
-              "width": 32
-            },
-            "marker_metadata": {
-              "data": ""
-            },
-            "markerType": "info"
+            "markerType": "hyperlink"
           }
         ]
       }
